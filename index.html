@@ -1,57 +1,96 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
+
 
 <head>
 
+
 <meta charset="UTF-8">
+
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <title>
-Daynote · Life Planner
+Daynote V4.2 · Life Planner
 </title>
+
 
 <link rel="stylesheet" href="style.css">
 
+
 </head>
+
 
 
 <body>
 
 
+<div class="sticker sticker-flower">
+🌷
+</div>
+
+
+<div class="sticker sticker-star">
+⭐
+</div>
+
+
+<div class="sticker sticker-note">
+♪
+</div>
+
+
+
+
 <div class="app">
 
 
-<!-- 顶部 -->
+
+<!-- =================
+Header
+================= -->
+
 
 <header class="header">
 
 
 <div>
 
+
 <h1 id="greeting">
+
 🌙 Good Evening
+
 </h1>
 
 
+
 <p id="date">
-2026年7月27日
+
+2026年7月27日 星期一
+
 </p>
+
 
 
 <p id="subtitle">
+
 今天辛苦啦，记录一下吧
+
 </p>
 
-</div>
-
-
-
-<div class="theme-tag">
-
-🍃 Mint Diary
 
 </div>
+
+
+
+<button class="theme-btn">
+
+🎨 Theme
+
+</button>
 
 
 </header>
@@ -62,41 +101,66 @@ Daynote · Life Planner
 
 
 
-<!-- 今日心情 -->
 
-<section class="card">
+
+<!-- =================
+Mood
+================= -->
+
+
+<section class="card paper">
+
+
+<div class="tape"></div>
 
 
 <h2>
+
 🌷 今日心情
+
 </h2>
+
 
 
 <div class="mood-list">
 
 
 <button onclick="setMood('🌸 开心')">
+
 🌸
+
 </button>
+
 
 
 <button onclick="setMood('🌱 平静')">
+
 🌱
+
 </button>
+
 
 
 <button onclick="setMood('☁ 普通')">
+
 ☁
+
 </button>
+
 
 
 <button onclick="setMood('🌧 疲惫')">
+
 🌧
+
 </button>
 
 
+
 <button onclick="setMood('🌙 emo')">
+
 🌙
+
 </button>
 
 
@@ -105,7 +169,9 @@ Daynote · Life Planner
 
 
 <p id="moodText">
+
 今天是什么心情呢？
+
 </p>
 
 
@@ -117,33 +183,132 @@ Daynote · Life Planner
 
 
 
-<!-- 今日重点 -->
-
-<section class="card">
 
 
-<div class="title-row">
+<!-- =================
+Calendar
+================= -->
+
+
+<section class="card paper">
+
+
+<div class="section-title">
 
 
 <h2>
-⭐ 今日重点
+
+📅 我的日历
+
 </h2>
+
+
+<button onclick="openCalendar()">
+
+查看
+
+</button>
 
 
 </div>
 
 
 
-<div class="input-row">
+<div class="mini-calendar">
 
 
-<input
-id="focusInput"
-placeholder="今天最重要的一件事">
+<div>
+
+一
+
+</div>
 
 
-<button onclick="addFocus()">
-添加
+<div>
+
+二
+
+</div>
+
+
+<div>
+
+三
+
+</div>
+
+
+<div>
+
+四
+
+</div>
+
+
+<div>
+
+五
+
+</div>
+
+
+<div>
+
+六
+
+</div>
+
+
+<div>
+
+日
+
+</div>
+
+
+</div>
+
+
+
+<div id="miniDays">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =================
+Focus
+================= -->
+
+
+<section class="card paper">
+
+
+<div class="section-title">
+
+
+<h2>
+
+⭐ 今日重点
+
+</h2>
+
+
+<button onclick="openFocus()">
+
++
+
 </button>
 
 
@@ -153,6 +318,7 @@ placeholder="今天最重要的一件事">
 
 <div id="focusList">
 
+
 </div>
 
 
@@ -165,27 +331,30 @@ placeholder="今天最重要的一件事">
 
 
 
-<!-- 今日待办 -->
 
-<section class="card">
+<!-- =================
+Todo
+================= -->
+
+
+<section class="card paper">
+
+
+<div class="section-title">
 
 
 <h2>
+
 ☁ 今日待办
+
 </h2>
 
 
 
-<div class="input-row">
+<button onclick="openTask()">
 
++
 
-<input
-id="taskInput"
-placeholder="输入待办任务">
-
-
-<button onclick="addTask()">
-添加
 </button>
 
 
@@ -195,7 +364,9 @@ placeholder="输入待办任务">
 
 <div id="taskList">
 
+
 </div>
+
 
 
 </section>
@@ -207,18 +378,29 @@ placeholder="输入待办任务">
 
 
 
+<!-- =================
+Routine
+================= -->
 
-<!-- 每日习惯 -->
 
-<section class="card">
+<section class="card paper">
+
+
+<div class="section-title">
 
 
 <h2>
+
 🌿 每日习惯
+
 </h2>
 
 
-<div id="habitList">
+</div>
+
+
+
+<div class="habit-list">
 
 
 <div class="habit">
@@ -242,10 +424,557 @@ placeholder="输入待办任务">
 </div>
 
 
+
 </div>
 
 
 </section>
+<!-- =================
+灵感花园
+================= -->
+
+
+<section class="card paper">
+
+
+<div class="section-title">
+
+
+<h2>
+
+💡 灵感花园
+
+</h2>
+
+
+<button onclick="openIdea()">
+
++
+
+</button>
+
+
+</div>
+
+
+
+<div id="ideaList">
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =================
+今日记录
+================= -->
+
+
+<section class="card paper">
+
+
+<div class="section-title">
+
+
+<h2>
+
+📖 今日记录
+
+</h2>
+
+
+<button onclick="openDiary()">
+
++
+
+</button>
+
+
+</div>
+
+
+
+<div id="diaryList">
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =================
+工作项目看板
+================= -->
+
+
+<section class="card paper">
+
+
+<div class="section-title">
+
+
+<h2>
+
+📊 工作项目看板
+
+</h2>
+
+
+<button onclick="openProject()">
+
++
+
+</button>
+
+
+</div>
+
+
+
+
+<div class="board">
+
+
+
+<div class="board-column">
+
+
+<h3>
+
+💭 灵感
+
+</h3>
+
+
+<div id="ideaBoard">
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="board-column">
+
+
+<h3>
+
+🚧 进行中
+
+</h3>
+
+
+<div id="doingBoard">
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="board-column">
+
+
+<h3>
+
+✅ 完成
+
+</h3>
+
+
+<div id="doneBoard">
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =================
+周计划
+================= -->
+
+
+<section class="card paper">
+
+
+<div class="section-title">
+
+
+<h2>
+
+🗓 周计划
+
+</h2>
+
+
+<button onclick="openWeek()">
+
++
+
+</button>
+
+
+</div>
+
+
+
+
+<div class="week-grid">
+
+
+
+<div>
+
+<h4>
+
+MON
+
+</h4>
+
+<p>
+
+暂无计划
+
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<h4>
+
+TUE
+
+</h4>
+
+<p>
+
+暂无计划
+
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<h4>
+
+WED
+
+</h4>
+
+<p>
+
+暂无计划
+
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<h4>
+
+THU
+
+</h4>
+
+<p>
+
+暂无计划
+
+</p>
+
+</div>
+
+
+
+
+<div>
+
+<h4>
+
+FRI
+
+</h4>
+
+<p>
+
+暂无计划
+
+</p>
+
+</div>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- =================
+Theme Room
+================= -->
+
+
+<section class="card paper">
+
+
+<h2>
+
+🎨 Theme Room
+
+</h2>
+
+
+
+<div class="theme-grid">
+
+
+
+<button onclick="changeTheme('mint')">
+
+🍃
+
+Mint Diary
+
+</button>
+
+
+
+<button onclick="changeTheme('pink')">
+
+🌸
+
+Sakura
+
+</button>
+
+
+
+<button onclick="changeTheme('purple')">
+
+💜
+
+Lavender
+
+</button>
+
+
+
+<button onclick="changeTheme('blue')">
+
+🩵
+
+Cloud Blue
+
+</button>
+
+
+
+<button onclick="changeTheme('cream')">
+
+🧸
+
+Teddy Cafe
+
+</button>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =================
+弹窗区域
+================= -->
+
+
+
+<!-- 今日重点 -->
+
+
+<div class="modal hidden" id="focusModal">
+
+
+<div class="modal-box">
+
+
+<h2>
+
+⭐ 今日重点
+
+</h2>
+
+
+<textarea
+id="focusInput"
+placeholder="今天最重要的一件事">
+</textarea>
+
+
+<button onclick="saveFocus()">
+
+保存
+
+</button>
+
+
+<button onclick="closeModal('focusModal')">
+
+取消
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 任务 -->
+
+
+<div class="modal hidden" id="taskModal">
+
+
+<div class="modal-box">
+
+
+<h2>
+
+☁ 新建任务
+
+</h2>
+
+
+<input
+id="taskInput"
+placeholder="输入任务">
+
+
+
+<textarea
+id="taskNote"
+placeholder="备注">
+</textarea>
+
+
+
+<button onclick="saveTask()">
+
+保存
+
+</button>
+
+
+
+<button onclick="closeModal('taskModal')">
+
+取消
+
+</button>
+
+
+</div>
+
+
+</div>
 
 
 
@@ -257,33 +986,46 @@ placeholder="输入待办任务">
 
 <!-- 灵感 -->
 
-<section class="card">
+
+<div class="modal hidden" id="ideaModal">
+
+
+<div class="modal-box">
 
 
 <h2>
-💡 灵感收集
-</h2>
 
+💡 灵感
+
+</h2>
 
 
 <textarea
 id="ideaInput"
-placeholder="记录突然想到的想法...">
+placeholder="记录灵感">
 </textarea>
 
 
+
 <button onclick="saveIdea()">
-保存灵感
+
+保存
+
 </button>
 
 
 
-<div id="ideaList">
+<button onclick="closeModal('ideaModal')">
+
+取消
+
+</button>
+
 
 </div>
 
 
-</section>
+</div>
 
 
 
@@ -292,92 +1034,184 @@ placeholder="记录突然想到的想法...">
 
 
 
-<!-- 今日记录 -->
 
-<section class="card">
+<!-- 日记 -->
+
+
+<div class="modal hidden" id="diaryModal">
+
+
+<div class="modal-box">
 
 
 <h2>
+
 📖 今日记录
+
+</h2>
+
+
+<textarea
+id="diaryInput"
+placeholder="记录今天">
+</textarea>
+
+
+
+<button onclick="saveDiary()">
+
+保存
+
+</button>
+
+
+
+<button onclick="closeModal('diaryModal')">
+
+取消
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 项目 -->
+
+
+<div class="modal hidden" id="projectModal">
+
+
+<div class="modal-box">
+
+
+<h2>
+
+📊 新项目
+
+</h2>
+
+
+<input
+id="projectName"
+placeholder="项目名称">
+
+
+<select id="projectStatus">
+
+
+<option value="idea">
+
+💭 灵感
+
+</option>
+
+
+<option value="doing">
+
+🚧 进行中
+
+</option>
+
+
+<option value="done">
+
+✅ 完成
+
+</option>
+
+
+</select>
+
+
+
+<button onclick="saveProject()">
+
+保存
+
+</button>
+
+
+
+<button onclick="closeModal('projectModal')">
+
+取消
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- 周计划 -->
+
+
+<div class="modal hidden" id="weekModal">
+
+
+<div class="modal-box">
+
+
+<h2>
+
+🗓 周计划
+
 </h2>
 
 
 
 <textarea
-id="noteInput"
-placeholder="写下今天发生的小事...">
+id="weekInput"
+placeholder="写下本周计划">
 </textarea>
 
 
 
-<button onclick="saveNote()">
-保存记录
+<button onclick="saveWeek()">
+
+保存
+
 </button>
 
 
+<button onclick="closeModal('weekModal')">
 
-<div id="noteShow">
+取消
 
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-
-
-<!-- 主题 -->
-
-
-<section class="card">
-
-
-<h2>
-🎨 Theme Room
-</h2>
-
-
-
-<div class="theme-list">
-
-
-<button onclick="changeTheme('mint')">
-🍃 薄荷绿
 </button>
-
-
-<button onclick="changeTheme('pink')">
-🌸 樱花粉
-</button>
-
-
-<button onclick="changeTheme('purple')">
-💜 薰衣草
-</button>
-
-
-<button onclick="changeTheme('blue')">
-🩵 云朵蓝
-</button>
-
 
 
 </div>
 
 
-</section>
-
-
-
-
-
-
 </div>
+
+
+
+
+
+
 
 
 
