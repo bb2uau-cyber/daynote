@@ -1291,3 +1291,39 @@ renderCategories();
 
 
 }
+
+// =======================
+// 弹窗打开控制
+// =======================
+
+
+function openTaskModal(){
+
+    document
+    .getElementById("taskModal")
+    .classList
+    .remove("hidden");
+
+}
+
+
+
+function openRoutineModal(){
+
+    document
+    .getElementById("routineModal")
+    .classList
+    .remove("hidden");
+
+}
+
+
+
+function openCategoryModal(){
+
+    document
+    .getElementById("categoryModal")
+    .classList
+    .remove("hidden");
+
+}
