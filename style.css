@@ -1627,3 +1627,34 @@ JSON.stringify(focus)
 
 
 }
+
+
+ function addFocus(){
+
+    let text = prompt(
+        "今天最重要的事情："
+    );
+
+
+    if(!text)
+    return;
+
+
+    let focus =
+    JSON.parse(
+        localStorage.getItem("focus")
+    ) || [];
+
+
+    focus.push(text);
+
+
+    localStorage.setItem(
+        "focus",
+        JSON.stringify(focus)
+    );
+
+
+    location.reload();
+
+}
