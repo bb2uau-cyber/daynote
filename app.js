@@ -1,166 +1,1030 @@
 /* ==========================
- Daynote V3.2
- Personal Work OS
- Stable Version
+Daynote V3.3
+Korean Digital Journal UI
 ========================== */
 
 
-/* ==========================
- 数据
-========================== */
+:root{
 
 
-let tasks =
-JSON.parse(
-localStorage.getItem("tasks")
-) || [];
+--bg:#EDF8F4;
+
+--card:rgba(255,255,255,.85);
+
+--primary:#A8D8C8;
+
+--success:#9CCDB5;
+
+--text:#494643;
+
+--sub:#9B9590;
+
+--line:#EEE8E2;
 
 
-
-let categories =
-JSON.parse(
-localStorage.getItem("categories")
-) || [
-
-{
-icon:"🎨",
-name:"视觉设计"
-},
-
-{
-icon:"📦",
-name:"产品开发"
-},
-
-{
-icon:"💡",
-name:"AI灵感"
-},
-
-{
-icon:"📊",
-name:"数据分析"
 }
 
-];
 
 
 
-let routines =
-JSON.parse(
-localStorage.getItem("routines")
-) || [
+*{
 
-{
-name:"查看店铺数据",
-done:false
-},
-
-{
-name:"整理今日素材",
-done:false
-}
-
-];
-
-
-
-let ideas =
-JSON.parse(
-localStorage.getItem("ideas")
-) || [];
-
-
-
-let focus =
-JSON.parse(
-localStorage.getItem("focus")
-) || [];
-
-
-
-
-
-
-/* ==========================
- 初始化
-========================== */
-
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-
-initDate();
-
-
-loadTheme();
-
-
-renderTasks();
-
-
-renderCategories();
-
-
-renderRoutines();
-
-
-renderIdeas();
-
-
-renderFocus();
-
-
-updateStatistics();
-
-
-bindEvents();
-
-
-});
-
-
-
-
-
-
-
-/* ==========================
- 日期
-========================== */
-
-
-function initDate(){
-
-
-let date =
-new Date();
-
-
-document
-.getElementById("todayDate")
-.innerText =
-
-
-date.toLocaleDateString(
-"zh-CN",
-{
-
-year:"numeric",
-
-month:"long",
-
-day:"numeric",
-
-weekday:"long"
+box-sizing:border-box;
 
 }
+
+
+
+body{
+
+
+margin:0;
+
+
+min-height:100vh;
+
+
+background:var(--bg);
+
+
+color:var(--text);
+
+
+font-family:
+
+"PingFang SC",
+"Microsoft YaHei",
+sans-serif;
+
+
+
+transition:.4s;
+
+
+}
+
+
+
+
+.app{
+
+
+max-width:900px;
+
+
+margin:auto;
+
+
+padding:
+
+35px 22px 80px;
+
+
+}
+
+
+
+
+
+
+
+
+/* 顶部 */
+
+
+.top{
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
+align-items:center;
+
+
+margin-bottom:25px;
+
+
+}
+
+
+
+.top h1{
+
+
+font-size:32px;
+
+
+margin:0;
+
+
+font-weight:600;
+
+
+}
+
+
+
+.top p{
+
+
+color:var(--sub);
+
+
+}
+
+
+
+.mood{
+
+
+background:var(--card);
+
+
+padding:
+
+12px 20px;
+
+
+border-radius:30px;
+
+
+box-shadow:
+
+0 10px 30px rgba(0,0,0,.05);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/* 卡片 */
+
+
+.card{
+
+
+background:var(--card);
+
+
+backdrop-filter:blur(20px);
+
+
+border-radius:30px;
+
+
+padding:25px;
+
+
+margin-bottom:18px;
+
+
+box-shadow:
+
+0 15px 40px rgba(0,0,0,.05);
+
+
+border:
+
+1px solid rgba(255,255,255,.5);
+
+
+}
+
+
+
+
+
+h2{
+
+
+font-size:18px;
+
+
+margin:0;
+
+
+}
+
+
+
+
+
+
+
+
+.section-header{
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
+align-items:center;
+
+
+margin-bottom:15px;
+
+
+}
+
+
+
+
+
+
+
+button{
+
+
+border:none;
+
+
+cursor:pointer;
+
+
+font-family:inherit;
+
+
+}
+
+
+
+
+
+
+
+
+.section-header button{
+
+
+background:var(--primary);
+
+
+color:white;
+
+
+padding:
+
+10px 18px;
+
+
+border-radius:25px;
+
+
+font-size:14px;
+
+
+transition:.3s;
+
+
+}
+
+
+
+.section-header button:hover{
+
+
+transform:translateY(-2px);
+
+
+}
+
+
+
+
+
+
+
+
+
+/* 完成度 */
+
+
+.progress-info{
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
+color:var(--sub);
+
+
+}
+
+
+
+.progress-bar{
+
+
+height:12px;
+
+
+background:#eee;
+
+
+border-radius:20px;
+
+
+overflow:hidden;
+
+
+margin-top:12px;
+
+
+}
+
+
+
+#progressInner{
+
+
+height:100%;
+
+
+width:0;
+
+
+background:
+
+linear-gradient(
+
+90deg,
+
+var(--primary),
+
+var(--success)
 
 );
 
 
+transition:.5s;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* 任务 */
+
+
+.task-item{
+
+
+padding:
+
+16px 0;
+
+
+border-bottom:
+
+1px solid var(--line);
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
+align-items:flex-start;
+
+
+}
+
+
+
+.task-main{
+
+
+display:flex;
+
+
+gap:14px;
+
+
+flex:1;
+
+
+}
+
+
+
+.task-content{
+
+
+cursor:pointer;
+
+
+}
+
+
+
+.checkbox{
+
+
+width:22px;
+
+
+height:22px;
+
+
+border-radius:50%;
+
+
+border:
+
+2px solid var(--primary);
+
+
+flex:none;
+
+
+cursor:pointer;
+
+
+}
+
+
+
+.checkbox.done{
+
+
+background:var(--success);
+
+
+border-color:var(--success);
+
+
+}
+
+
+
+.task-title{
+
+
+font-size:15px;
+
+
+}
+
+
+
+.task-done{
+
+
+text-decoration:line-through;
+
+
+color:#aaa;
+
+
+}
+
+
+
+.task-meta{
+
+
+font-size:12px;
+
+
+color:var(--sub);
+
+
+line-height:1.8;
+
+
+margin-top:8px;
+
+
+}
+
+
+
+.task-detail{
+
+
+display:none;
+
+
+margin-top:12px;
+
+
+padding:15px;
+
+
+background:
+
+rgba(255,255,255,.55);
+
+
+border-radius:18px;
+
+
+font-size:13px;
+
+
+line-height:1.8;
+
+
+}
+
+
+
+.task-detail.show{
+
+
+display:block;
+
+
+}
+
+
+
+
+
+
+
+
+
+.delete-task,
+
+.delete-routine,
+
+.delete-focus,
+
+.delete-idea,
+
+
+.remove-category{
+
+
+background:none;
+
+
+color:#aaa;
+
+
+font-size:13px;
+
+
+padding:5px;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* 备注 */
+
+
+.note{
+
+
+background:
+
+rgba(255,255,255,.65);
+
+
+padding:14px;
+
+
+border-radius:18px;
+
+
+margin-top:10px;
+
+
+font-size:14px;
+
+
+line-height:1.6;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* 统计 */
+
+
+.statistics{
+
+
+display:flex;
+
+
+justify-content:space-around;
+
+
+text-align:center;
+
+
+}
+
+
+
+.statistics p{
+
+
+color:var(--sub);
+
+
+font-size:13px;
+
+
+}
+
+
+
+.statistics strong{
+
+
+font-size:26px;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* 分类 */
+
+
+.category-tag{
+
+
+display:inline-flex;
+
+
+align-items:center;
+
+
+background:
+
+rgba(255,255,255,.7);
+
+
+padding:
+
+8px 14px;
+
+
+border-radius:20px;
+
+
+margin:
+
+5px;
+
+
+gap:5px;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* 主题 */
+
+
+.theme-grid{
+
+
+display:grid;
+
+
+grid-template-columns:
+
+repeat(3,1fr);
+
+
+gap:12px;
+
+
+}
+
+
+
+.theme-grid button{
+
+
+background:
+
+rgba(255,255,255,.75);
+
+
+padding:
+
+14px 8px;
+
+
+border-radius:22px;
+
+
+color:var(--text);
+
+
+transition:.3s;
+
+
+}
+
+
+
+.theme-grid button:hover{
+
+
+transform:translateY(-3px);
+
+
+}
+
+
+
+
+
+
+
+
+
+/* 弹窗 */
+
+
+.modal{
+
+
+position:fixed;
+
+
+inset:0;
+
+
+background:
+
+rgba(0,0,0,.25);
+
+
+display:flex;
+
+
+align-items:center;
+
+
+justify-content:center;
+
+
+z-index:999;
+
+
+}
+
+
+
+.hidden{
+
+
+display:none;
+
+
+}
+
+
+
+
+.modal-box{
+
+
+width:90%;
+
+
+max-width:420px;
+
+
+background:white;
+
+
+border-radius:32px;
+
+
+padding:30px;
+
+
+animation:
+
+popup .25s;
+
+
+}
+
+
+
+.modal-box h2{
+
+
+margin-bottom:20px;
+
+
+}
+
+
+
+
+.modal-box input,
+
+.modal-box textarea,
+
+.modal-box select{
+
+
+width:100%;
+
+
+padding:14px;
+
+
+border:none;
+
+
+outline:none;
+
+
+background:#F8F5F1;
+
+
+border-radius:18px;
+
+
+margin-bottom:12px;
+
+
+font-size:14px;
+
+
+}
+
+
+
+
+.modal-box textarea{
+
+
+height:110px;
+
+
+resize:none;
+
+
+}
+
+
+
+
+.time-row{
+
+
+display:flex;
+
+
+gap:10px;
+
+
+}
+
+
+
+.time-row input{
+
+
+flex:1;
+
+
+}
+
+
+
+.modal-buttons{
+
+
+display:flex;
+
+
+gap:12px;
+
+
+margin-top:15px;
+
+
+}
+
+
+
+.modal-buttons button{
+
+
+flex:1;
+
+
+padding:14px;
+
+
+border-radius:22px;
+
+
+background:#eee;
+
+
+}
+
+
+
+.modal-buttons button:last-child{
+
+
+background:var(--primary);
+
+
+color:white;
+
+
+}
+
+
+
+
+
+
+@keyframes popup{
+
+
+from{
+
+
+opacity:0;
+
+
+transform:scale(.9);
+
+
+}
+
+
+to{
+
+
+opacity:1;
+
+
+transform:scale(1);
+
+
+}
+
+
 }
 
 
@@ -172,321 +1036,125 @@ weekday:"long"
 
 
 /* ==========================
- 事件绑定
-========================== */
-
-
-function bindEvents(){
-
-
-
-// 今日待办
-
-
-document
-.getElementById("addTaskBtn")
-.onclick =
-()=>openModal("taskModal");
-
-
-
-document
-.getElementById("saveTask")
-.onclick =
-saveTask;
-
-
-
-document
-.getElementById("closeTask")
-.onclick =
-()=>closeModal("taskModal");
-
-
-
-
-
-
-// 每日习惯
-
-
-document
-.getElementById("addRoutineBtn")
-.onclick =
-()=>openModal("routineModal");
-
-
-
-document
-.getElementById("saveRoutine")
-.onclick =
-saveRoutine;
-
-
-
-document
-.getElementById("closeRoutine")
-.onclick =
-()=>closeModal("routineModal");
-
-
-
-
-
-
-// 分类
-
-
-document
-.getElementById("addCategoryBtn")
-.onclick =
-()=>openModal("categoryModal");
-
-
-
-document
-.getElementById("saveCategory")
-.onclick =
-saveCategory;
-
-
-
-document
-.getElementById("closeCategory")
-.onclick =
-()=>closeModal("categoryModal");
-
-
-
-
-
-
-
-// 灵感
-
-
-document
-.getElementById("addIdeaBtn")
-.onclick =
-()=>openModal("ideaModal");
-
-
-
-document
-.getElementById("saveIdea")
-.onclick =
-saveIdea;
-
-
-
-document
-.getElementById("closeIdea")
-.onclick =
-()=>closeModal("ideaModal");
-
-
-
-
-
-
-
-// 今日重点
-
-
-document
-.getElementById("addFocusBtn")
-.onclick =
-()=>openModal("focusModal");
-
-
-
-document
-.getElementById("saveFocus")
-.onclick =
-saveFocus;
-
-
-
-document
-.getElementById("closeFocus")
-.onclick =
-()=>closeModal("focusModal");
-
-
-
-
-
-
-
-
-// 主题
-
-
-document
-.querySelectorAll(".theme-grid button")
-.forEach(button=>{
-
-
-button.onclick =
-()=>{
-
-
-changeTheme(
-button.dataset.theme
-);
-
-
-};
-
-
-});
-
-
-
-}
-
-
-
-
-
-
-
-
-
-/* ==========================
- 任务系统
+主题
 ========================== */
 
 
 
-function saveTask(){
+body.mint{
 
+--bg:#EDF8F4;
 
+--primary:#A8D8C8;
 
-let name =
-document
-.getElementById("taskName")
-.value
-.trim();
+}
 
 
+body.sakura{
 
-if(!name)
-return;
+--bg:#FFF4F6;
 
+--primary:#EAB6C7;
 
+}
 
-let task={
 
 
-id:
-Date.now(),
+body.lavender{
 
+--bg:#F6F1FA;
 
+--primary:#C6B5E5;
 
-name:name,
+}
 
 
 
-project:
+body.blue{
 
-document
-.getElementById("taskProject")
-.value,
+--bg:#F1F7FC;
 
+--primary:#A8CDE8;
 
+}
 
-category:
 
-document
-.getElementById("taskCategory")
-.value,
 
+body.vanilla{
 
+--bg:#FCF7EF;
 
-priority:
+--primary:#E8D2AE;
 
-document
-.getElementById("taskPriority")
-.value,
+}
 
 
 
-start:
+body.aqua{
 
-document
-.getElementById("taskStart")
-.value,
+--bg:#EFFAF8;
 
+--primary:#B5E2DC;
 
+}
 
-end:
 
-document
-.getElementById("taskEnd")
-.value,
 
+body.peach{
 
+--bg:#FFF5F0;
 
-repeat:
+--primary:#F3B8A6;
 
-document
-.getElementById("taskRepeat")
-.value,
+}
 
 
 
-note:
+body.moon{
 
-document
-.getElementById("taskNote")
-.value,
+--bg:#F3F0F8;
 
+--primary:#B7A8D0;
 
+}
 
-created:
 
-new Date()
-.toLocaleString(),
 
+body.ice{
 
+--bg:#F3FAFC;
 
-finished:"",
+--primary:#B7DDE8;
 
+}
 
 
-done:false,
 
+body.lilac{
 
+--bg:#FAF2FA;
 
-open:false
+--primary:#D2B7D9;
 
+}
 
-};
 
 
+body.pearl{
 
+--bg:#F7F7F3;
 
+--primary:#D8D5CE;
 
-tasks.unshift(task);
+}
 
 
 
-saveData();
+body.teddy{
 
+--bg:#F8F0E7;
 
-
-renderTasks();
-
-
-
-closeModal("taskModal");
-
-
-
-clearTaskForm();
-
-
+--primary:#D8BFA8;
 
 }
 
@@ -498,354 +1166,51 @@ clearTaskForm();
 
 
 
-function renderTasks(){
+@media(max-width:600px){
 
 
-let box =
-document
-.getElementById("taskList");
+.app{
 
 
+padding:
 
-box.innerHTML="";
-
-
-
-tasks.forEach(task=>{
-
-
-let item =
-document
-.createElement("div");
-
-
-
-item.className="task-item";
-
-
-
-item.innerHTML =
-
-
-`
-
-<div class="task-main">
-
-
-<div class="checkbox ${task.done?"done":""}"></div>
-
-
-
-<div class="task-content">
-
-
-<div class="task-title ${task.done?"task-done":""}">
-
-${task.name}
-
-</div>
-
-
-
-<div class="task-meta">
-
-${task.category || "未分类"}
-
-<br>
-
-📌 ${task.project || "无项目"}
-
-</div>
-
-
-
-
-<div class="task-detail ${task.open?"show":""}">
-
-
-创建：
-
-${task.created}
-
-
-
-<br>
-
-
-⏰
-
-${task.start || "--"}
-
--
-
-${task.end || "--"}
-
-
-
-<br>
-
-
-🔁
-
-${repeatText(task.repeat)}
-
-
-
-<br>
-
-
-${task.finished?
-
-"完成："+task.finished:""
-}
-
-
-
-<br>
-
-
-
-📝
-
-${task.note || "无备注"}
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-<button class="delete-task">
-
-删除
-
-</button>
-
-
-`;
-
-
-
-
-
-item
-.querySelector(".checkbox")
-.onclick =
-()=>toggleTask(task.id);
-
-
-
-item
-.querySelector(".task-content")
-.onclick =
-()=>toggleDetail(task.id);
-
-
-
-item
-.querySelector(".delete-task")
-.onclick =
-()=>deleteTask(task.id);
-
-
-
-box.appendChild(item);
-
-
-
-});
-
-
-
-updateStatistics();
+20px 15px;
 
 
 }
 
 
 
+.top h1{
 
 
-
-
-
-function toggleDetail(id){
-
-
-let task =
-tasks.find(
-t=>t.id===id
-);
-
-
-
-if(task){
-
-
-task.open =
-!task.open;
-
-
-renderTasks();
-
-
-}
+font-size:26px;
 
 
 }
 
 
 
+.theme-grid{
 
 
+grid-template-columns:
 
-function toggleTask(id){
-
-
-let task =
-tasks.find(
-t=>t.id===id
-);
-
-
-
-if(!task)
-return;
-
-
-
-task.done =
-!task.done;
-
-
-
-if(task.done){
-
-
-task.finished =
-new Date()
-.toLocaleString();
-
-
-}
-
-else{
-
-
-task.finished="";
+repeat(2,1fr);
 
 
 }
 
 
 
-saveData();
+.card{
 
 
-
-renderTasks();
-
-
-}
-
-
-
-
-
-
-function deleteTask(id){
-
-
-tasks =
-tasks.filter(
-t=>t.id!==id
-);
-
-
-
-saveData();
-
-
-renderTasks();
+padding:20px;
 
 
 }
 
-
-
-
-
-
-function repeatText(type){
-
-
-let map={
-
-
-none:"不循环",
-
-daily:"每天",
-
-workday:"工作日",
-
-weekly:"每周",
-
-monthly:"每月"
-
-
-};
-
-
-return map[type] || "";
-
-}
-
-
-
-
-
-
-
-
-function clearTaskForm(){
-
-
-[
-
-"taskName",
-
-"taskProject",
-
-"taskStart",
-
-"taskEnd",
-
-"taskNote"
-
-]
-
-.forEach(id=>{
-
-
-let el =
-document.getElementById(id);
-
-
-
-if(el)
-
-el.value="";
-
-
-});
 
 
 }
@@ -861,7 +1226,6 @@ let select =
 document.getElementById("taskCategory");
 
 
-
 if(select){
 
 
@@ -874,21 +1238,19 @@ select.innerHTML =
 
 
 
-categories.forEach(c=>{
+categories.forEach(item=>{
 
 
 select.innerHTML +=
 
 `
-
 <option>
 
-${c.icon} ${c.name}
+${item.icon} ${item.name}
 
 </option>
 
 `;
-
 
 });
 
@@ -901,7 +1263,6 @@ let box =
 document.getElementById("categoryList");
 
 
-
 if(!box)
 return;
 
@@ -911,7 +1272,7 @@ box.innerHTML="";
 
 
 
-categories.forEach((c,index)=>{
+categories.forEach((item,index)=>{
 
 
 box.innerHTML +=
@@ -921,13 +1282,12 @@ box.innerHTML +=
 
 <div class="category-tag">
 
+${item.icon}
 
-${c.icon}
-
-${c.name}
+${item.name}
 
 
-<button 
+<button
 class="remove-category"
 data-index="${index}"
 >
@@ -939,14 +1299,11 @@ data-index="${index}"
 
 </div>
 
-
 `;
 
 
 
 });
-
-
 
 
 
@@ -964,7 +1321,6 @@ btn.dataset.index,
 );
 
 
-
 saveData();
 
 
@@ -985,9 +1341,7 @@ renderCategories();
 
 
 
-
 function saveCategory(){
-
 
 
 let icon =
@@ -1038,6 +1392,7 @@ document
 .getElementById("categoryIcon")
 .value="";
 
+
 document
 .getElementById("categoryName")
 .value="";
@@ -1066,7 +1421,6 @@ document
 .getElementById("routineList");
 
 
-
 if(!box)
 return;
 
@@ -1076,7 +1430,7 @@ box.innerHTML="";
 
 
 
-routines.forEach((routine,index)=>{
+routines.forEach((item,index)=>{
 
 
 box.innerHTML +=
@@ -1090,24 +1444,20 @@ box.innerHTML +=
 <div class="task-main">
 
 
-<div 
-class="checkbox ${routine.done?"done":""}"
-data-index="${index}"
->
+<div class="checkbox ${item.done?"done":""}"
+data-index="${index}">
 
 </div>
-
 
 
 <div>
 
-${routine.name}
+${item.name}
 
 </div>
 
 
 </div>
-
 
 
 <button
@@ -1118,7 +1468,6 @@ data-index="${index}"
 删除
 
 </button>
-
 
 
 </div>
@@ -1132,22 +1481,17 @@ data-index="${index}"
 
 
 
-
-
 document
-.querySelectorAll(".checkbox")
-.forEach(box=>{
+.querySelectorAll("#routineList .checkbox")
+.forEach(btn=>{
 
 
-box.onclick=()=>{
+btn.onclick=()=>{
 
 
 let index =
-box.dataset.index;
+btn.dataset.index;
 
-
-
-if(index!==undefined){
 
 
 routines[index].done =
@@ -1159,9 +1503,6 @@ saveData();
 
 
 renderRoutines();
-
-
-}
 
 
 };
@@ -1188,7 +1529,6 @@ btn.dataset.index,
 );
 
 
-
 saveData();
 
 
@@ -1201,6 +1541,7 @@ renderRoutines();
 });
 
 
+
 }
 
 
@@ -1211,7 +1552,6 @@ renderRoutines();
 
 
 function saveRoutine(){
-
 
 
 let name =
@@ -1300,13 +1640,14 @@ document
 .value="";
 
 
-
 closeModal(
 "focusModal"
 );
 
 
+
 }
+
 
 
 
@@ -1339,7 +1680,7 @@ box.innerHTML +=
 
 `
 
-<div class="note focus-item">
+<div class="note">
 
 
 ⭐ ${item}
@@ -1356,16 +1697,13 @@ data-index="${index}"
 </button>
 
 
-
 </div>
-
 
 `;
 
 
 
 });
-
 
 
 
@@ -1394,7 +1732,6 @@ renderFocus();
 
 
 });
-
 
 
 }
@@ -1436,7 +1773,6 @@ time:
 new Date()
 .toLocaleString()
 
-
 });
 
 
@@ -1469,11 +1805,9 @@ document
 function renderIdeas(){
 
 
-
 let box =
 document
 .getElementById("ideaList");
-
 
 
 if(!box)
@@ -1485,7 +1819,7 @@ box.innerHTML="";
 
 
 
-ideas.forEach((idea,index)=>{
+ideas.forEach((item,index)=>{
 
 
 box.innerHTML +=
@@ -1496,8 +1830,7 @@ box.innerHTML +=
 <div class="note">
 
 
-💡 ${idea.text}
-
+💡 ${item.text}
 
 
 <br>
@@ -1505,10 +1838,9 @@ box.innerHTML +=
 
 <small>
 
-${idea.time}
+${item.time}
 
 </small>
-
 
 
 <button
@@ -1521,16 +1853,13 @@ data-index="${index}"
 </button>
 
 
-
 </div>
-
 
 `;
 
 
 
 });
-
 
 
 
@@ -1561,7 +1890,6 @@ renderIdeas();
 });
 
 
-
 }
 
 
@@ -1581,9 +1909,8 @@ function updateStatistics(){
 
 
 let done =
-
 tasks.filter(
-task=>task.done
+item=>item.done
 )
 .length;
 
@@ -1596,11 +1923,13 @@ tasks.length;
 
 let percent =
 
-total?
+total ?
 
 Math.round(
 done / total *100
-):
+)
+
+:
 
 0;
 
@@ -1620,7 +1949,6 @@ progressText.innerText =
 
 
 
-
 let progressPercent =
 document
 .getElementById("progressPercent");
@@ -1632,7 +1960,6 @@ if(progressPercent)
 progressPercent.innerText =
 
 percent+"%";
-
 
 
 
@@ -1652,28 +1979,46 @@ percent+"%";
 
 
 
-
+let today =
 document
-.getElementById("todayDone")
-.innerText =
+.getElementById("todayDone");
+
+
+
+if(today)
+
+today.innerText =
 done;
 
 
 
+let number =
 document
-.getElementById("taskNumber")
-.innerText =
+.getElementById("taskNumber");
+
+
+
+if(number)
+
+number.innerText =
 total;
 
 
 
+let all =
 document
-.getElementById("allDone")
-.innerText =
+.getElementById("allDone");
+
+
+
+if(all)
+
+all.innerText =
 
 localStorage.getItem("allDone")
-|| done;
+||
 
+done;
 
 
 }
@@ -1687,7 +2032,7 @@ localStorage.getItem("allDone")
 
 
 /* ==========================
- 主题系统
+ 主题
 ========================== */
 
 
@@ -1733,7 +2078,6 @@ pearl:"Pearl White",
 
 teddy:"Teddy Beige"
 
-
 };
 
 
@@ -1755,9 +2099,6 @@ names[theme];
 
 
 
-
-
-
 function loadTheme(){
 
 
@@ -1768,14 +2109,10 @@ localStorage.getItem(
 
 
 
-if(theme){
+if(theme)
 
 document.body.className =
 theme;
-
-
-}
-
 
 
 }
@@ -1789,7 +2126,7 @@ theme;
 
 
 /* ==========================
- 工具
+ 弹窗
 ========================== */
 
 
@@ -1804,12 +2141,12 @@ document
 
 if(modal)
 
-modal.classList
-.remove("hidden");
+modal.classList.remove(
+"hidden"
+);
 
 
 }
-
 
 
 
@@ -1826,8 +2163,9 @@ document
 
 if(modal)
 
-modal.classList
-.add("hidden");
+modal.classList.add(
+"hidden"
+);
 
 
 }
@@ -1835,6 +2173,14 @@ modal.classList
 
 
 
+
+
+
+
+
+/* ==========================
+ 保存
+========================== */
 
 
 function saveData(){
@@ -1874,11 +2220,4 @@ JSON.stringify(focus)
 );
 
 
-
 }
-
-
-
-// ==========================
-// End
-// ==========================
