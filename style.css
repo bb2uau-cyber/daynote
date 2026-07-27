@@ -1,22 +1,28 @@
-/* ==========================
-Daynote V4.1 Beta
-Style
-========================== */
+/* =========================
+ Daynote V4.2
+ Korean / Japanese Planner Style
+========================= */
 
 
 :root{
 
---bg:#eef8f3;
 
---card:#fffaf5;
+--bg:#f5f7f0;
+
+--paper:#fffaf5;
 
 --primary:#a8d8c8;
 
---text:#555;
+--secondary:#e4f2ec;
+
+--text:#5c5550;
 
 --sub:#999;
 
+
 }
+
+
 
 
 
@@ -43,22 +49,31 @@ min-height:100vh;
 
 font-family:
 
+
 "PingFang SC",
 "Microsoft YaHei",
 sans-serif;
-
 
 
 color:var(--text);
 
 
 
-background:
+background-color:var(--bg);
+
+
+
+background-image:
+
 
 radial-gradient(
-#dceee5 1px,
+
+#d8e9df 1px,
+
 transparent 1px
+
 );
+
 
 
 background-size:
@@ -67,7 +82,7 @@ background-size:
 
 
 
-transition:.4s;
+transition:.5s;
 
 
 }
@@ -76,12 +91,10 @@ transition:.4s;
 
 
 
-
-
 .app{
 
 
-max-width:760px;
+max-width:900px;
 
 
 margin:auto;
@@ -100,7 +113,98 @@ padding:
 
 
 
-/* 顶部 */
+
+
+/* =================
+贴纸
+================= */
+
+
+.sticker{
+
+
+position:fixed;
+
+
+font-size:35px;
+
+
+z-index:-1;
+
+
+animation:
+
+float 4s infinite;
+
+
+}
+
+
+
+.sticker-flower{
+
+
+top:80px;
+
+
+right:8%;
+
+
+}
+
+
+
+.sticker-star{
+
+
+bottom:120px;
+
+
+left:8%;
+
+
+}
+
+
+
+.sticker-note{
+
+
+top:45%;
+
+
+right:5%;
+
+
+}
+
+
+
+
+
+@keyframes float{
+
+
+50%{
+
+transform:translateY(-10px);
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =================
+Header
+================= */
 
 
 .header{
@@ -125,10 +229,16 @@ margin-bottom:25px;
 .header h1{
 
 
-font-size:32px;
+font-size:34px;
 
 
-margin:0 0 10px;
+font-weight:600;
+
+
+margin:0;
+
+
+letter-spacing:1px;
 
 
 }
@@ -138,33 +248,23 @@ margin:0 0 10px;
 .header p{
 
 
+margin:8px 0;
+
+
 color:var(--sub);
-
-
-margin:5px 0;
 
 
 }
 
 
 
-.theme-tag{
+.theme-btn{
 
 
 background:white;
 
 
-padding:
-
-12px 18px;
-
-
-border-radius:30px;
-
-
-box-shadow:
-
-0 10px 25px rgba(0,0,0,.06);
+color:var(--text);
 
 
 }
@@ -177,13 +277,17 @@ box-shadow:
 
 
 
-/* 卡片 */
+/* =================
+卡片
+================= */
 
 
 .card{
 
 
-background:var(--card);
+background:
+
+var(--paper);
 
 
 border-radius:30px;
@@ -192,12 +296,15 @@ border-radius:30px;
 padding:25px;
 
 
-margin-bottom:20px;
+margin-bottom:22px;
+
 
 
 box-shadow:
 
-0 15px 35px rgba(80,60,40,.08);
+0 15px 40px
+
+rgba(80,60,40,.08);
 
 
 
@@ -207,13 +314,45 @@ position:relative;
 overflow:hidden;
 
 
+
+animation:
+
+pageIn .5s;
+
+
 }
 
 
 
 
 
-.card::before{
+@keyframes pageIn{
+
+
+from{
+
+opacity:0;
+
+transform:
+
+translateY(20px);
+
+}
+
+
+to{
+
+opacity:1;
+
+}
+
+}
+
+
+
+
+
+.paper::before{
 
 
 content:"";
@@ -222,27 +361,31 @@ content:"";
 position:absolute;
 
 
-top:0;
+top:-15px;
 
 
-left:25px;
+left:50%;
 
 
-width:80px;
+transform:
+
+translateX(-50%)
+rotate(-3deg);
 
 
-height:8px;
+
+width:110px;
+
+
+height:28px;
 
 
 background:
 
-rgba(255,220,170,.7);
+rgba(255,220,180,.7);
 
 
-border-radius:10px;
-
-
-transform:rotate(-3deg);
+border-radius:5px;
 
 
 }
@@ -253,10 +396,14 @@ transform:rotate(-3deg);
 
 
 
+
+/* 标题 */
+
+
 h2{
 
 
-font-size:18px;
+font-size:19px;
 
 
 margin-bottom:18px;
@@ -266,68 +413,16 @@ margin-bottom:18px;
 
 
 
-
-
-
-
-
-/* 输入 */
-
-
-.input-row{
+.section-title{
 
 
 display:flex;
 
 
-gap:10px;
+justify-content:space-between;
 
 
-}
-
-
-
-input,
-
-textarea{
-
-
-border:none;
-
-
-outline:none;
-
-
-background:#f8f3ee;
-
-
-border-radius:18px;
-
-
-padding:14px;
-
-
-font-size:14px;
-
-
-width:100%;
-
-
-}
-
-
-
-
-textarea{
-
-
-height:120px;
-
-
-resize:none;
-
-
-margin-bottom:12px;
+align-items:center;
 
 
 }
@@ -339,7 +434,9 @@ margin-bottom:12px;
 
 
 
-/* 按钮 */
+/* =================
+按钮
+================= */
 
 
 button{
@@ -348,10 +445,9 @@ button{
 border:none;
 
 
-cursor:pointer;
+background:
 
-
-background:var(--primary);
+var(--primary);
 
 
 color:white;
@@ -362,16 +458,17 @@ padding:
 10px 18px;
 
 
-border-radius:22px;
+border-radius:25px;
 
 
-font-size:14px;
+cursor:pointer;
 
 
 transition:.3s;
 
 
 }
+
 
 
 
@@ -392,7 +489,69 @@ translateY(-3px);
 
 
 
-/* 心情 */
+
+/* =================
+输入
+================= */
+
+
+input,
+
+textarea,
+
+select{
+
+
+width:100%;
+
+
+border:none;
+
+
+outline:none;
+
+
+background:#f7f2ec;
+
+
+border-radius:18px;
+
+
+padding:14px;
+
+
+margin-bottom:12px;
+
+
+font-size:14px;
+
+
+}
+
+
+
+textarea{
+
+
+height:120px;
+
+
+resize:none;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =================
+心情
+================= */
 
 
 .mood-list{
@@ -420,18 +579,18 @@ height:45px;
 padding:0;
 
 
-border-radius:50%;
+background:white;
+
+
+color:#555;
 
 
 font-size:22px;
 
 
-background:white;
-
-
 box-shadow:
 
-0 5px 15px rgba(0,0,0,.08);
+0 5px 15px rgba(0,0,0,.06);
 
 
 }
@@ -443,24 +602,38 @@ box-shadow:
 
 
 
-/* 列表 */
+/* =================
+列表
+================= */
 
 
 .task-item,
 
-.focus-item{
+.focus-item,
+
+.idea-item,
+
+
+.project-card{
 
 
 background:white;
 
 
-padding:14px;
+padding:15px;
 
 
-border-radius:18px;
+border-radius:20px;
 
 
 margin-top:12px;
+
+
+}
+
+
+
+.task-item{
 
 
 display:flex;
@@ -477,13 +650,14 @@ align-items:center;
 
 
 
+
 .complete{
 
 
 text-decoration:line-through;
 
 
-opacity:.5;
+opacity:.45;
 
 
 }
@@ -495,10 +669,89 @@ opacity:.5;
 
 
 
-/* 习惯 */
+/* =================
+看板
+================= */
 
 
-.habit{
+.board{
+
+
+display:grid;
+
+
+grid-template-columns:
+
+repeat(3,1fr);
+
+
+gap:15px;
+
+
+}
+
+
+
+
+.board-column{
+
+
+background:#faf6ef;
+
+
+border-radius:20px;
+
+
+padding:15px;
+
+
+min-height:150px;
+
+
+}
+
+
+
+.board-column h3{
+
+
+font-size:14px;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =================
+周计划
+================= */
+
+
+.week-grid{
+
+
+display:grid;
+
+
+grid-template-columns:
+
+repeat(5,1fr);
+
+
+gap:10px;
+
+
+}
+
+
+
+.week-grid div{
 
 
 background:white;
@@ -510,7 +763,17 @@ padding:15px;
 border-radius:18px;
 
 
-margin-bottom:10px;
+min-height:100px;
+
+
+}
+
+
+
+.week-grid h4{
+
+
+margin:0;
 
 
 }
@@ -523,10 +786,12 @@ margin-bottom:10px;
 
 
 
-/* 主题 */
+/* =================
+主题
+================= */
 
 
-.theme-list{
+.theme-grid{
 
 
 display:grid;
@@ -534,7 +799,7 @@ display:grid;
 
 grid-template-columns:
 
-repeat(2,1fr);
+repeat(3,1fr);
 
 
 gap:12px;
@@ -544,8 +809,7 @@ gap:12px;
 
 
 
-
-.theme-list button{
+.theme-grid button{
 
 
 background:white;
@@ -564,9 +828,88 @@ color:var(--text);
 
 
 
-/* =====================
+/* =================
+弹窗
+================= */
+
+
+.modal{
+
+
+position:fixed;
+
+
+inset:0;
+
+
+background:
+
+rgba(0,0,0,.25);
+
+
+display:flex;
+
+
+align-items:center;
+
+
+justify-content:center;
+
+
+z-index:999;
+
+
+}
+
+
+
+
+.hidden{
+
+
+display:none;
+
+
+}
+
+
+
+.modal-box{
+
+
+width:90%;
+
+
+max-width:420px;
+
+
+background:white;
+
+
+border-radius:30px;
+
+
+padding:30px;
+
+
+box-shadow:
+
+0 20px 60px rgba(0,0,0,.15);
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =================
 主题
-===================== */
+================= */
 
 
 body.mint{
@@ -584,7 +927,7 @@ body.mint{
 body.pink{
 
 
---bg:#fff2f6;
+--bg:#fff1f5;
 
 --primary:#e8b6c5;
 
@@ -596,9 +939,9 @@ body.pink{
 body.purple{
 
 
---bg:#f5f0fa;
+--bg:#f6f0fa;
 
---primary:#c6b5e5;
+--primary:#c7b5e4;
 
 
 }
@@ -617,13 +960,44 @@ body.blue{
 
 
 
+body.cream{
+
+
+--bg:#faf3e8;
+
+--primary:#d9b98c;
+
+
+}
 
 
 
 
 
 
-@media(max-width:600px){
+
+
+
+@media(max-width:700px){
+
+
+.board{
+
+
+grid-template-columns:1fr;
+
+
+}
+
+
+
+.week-grid{
+
+
+grid-template-columns:repeat(2,1fr);
+
+
+}
 
 
 
@@ -644,17 +1018,6 @@ font-size:26px;
 
 
 }
-
-
-
-.card{
-
-
-padding:20px;
-
-
-}
-
 
 
 }
