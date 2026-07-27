@@ -11,9 +11,7 @@
 Daynote · Personal Work OS
 </title>
 
-
 <link rel="stylesheet" href="style.css">
-
 
 </head>
 
@@ -23,8 +21,6 @@ Daynote · Personal Work OS
 
 <div class="app">
 
-
-<!-- 顶部 -->
 
 <header class="top">
 
@@ -36,9 +32,7 @@ Daynote · Personal Work OS
 </h1>
 
 
-<p id="todayDate">
-2026.07.27 Monday
-</p>
+<p id="todayDate"></p>
 
 
 </div>
@@ -47,11 +41,11 @@ Daynote · Personal Work OS
 
 <div class="mood">
 
-<span id="moodIcon">
+<span id="themeIcon">
 🍃
 </span>
 
-<span id="moodText">
+<span id="themeName">
 Mint Cloud
 </span>
 
@@ -67,9 +61,6 @@ Mint Cloud
 
 
 
-<!-- 完成度 -->
-
-
 <section class="card">
 
 
@@ -83,13 +74,17 @@ Mint Cloud
 <div class="progress-info">
 
 
-<span id="completeCount">
+<span id="progressText">
+
 0 / 0
+
 </span>
 
 
-<span id="completeRate">
+<span id="progressPercent">
+
 0%
+
 </span>
 
 
@@ -99,11 +94,7 @@ Mint Cloud
 
 <div class="progress-bar">
 
-
-<div id="progressLine">
-
-</div>
-
+<div id="progressInner"></div>
 
 </div>
 
@@ -118,8 +109,6 @@ Mint Cloud
 
 
 
-<!-- 今日重点 -->
-
 
 <section class="card">
 
@@ -127,15 +116,12 @@ Mint Cloud
 <div class="section-header">
 
 
-<div class="section-title">
-
+<h2>
 ⭐ 今日重点
-
-</div>
-
+</h2>
 
 
-<button onclick="addFocus()">
+<button id="addFocusBtn">
 
 ＋ 添加
 
@@ -146,10 +132,8 @@ Mint Cloud
 
 
 
-<div id="focusList">
+<div id="focusList"></div>
 
-
-</div>
 
 
 </section>
@@ -162,24 +146,18 @@ Mint Cloud
 
 
 
-<!-- 今日待办 -->
-
-
 <section class="card">
 
 
 <div class="section-header">
 
 
-<div class="section-title">
-
+<h2>
 ☁ 今日待办
-
-</div>
-
+</h2>
 
 
-<button onclick="openTaskModal()">
+<button id="addTaskBtn">
 
 ＋ 新任务
 
@@ -192,7 +170,6 @@ Mint Cloud
 
 <div id="taskList">
 
-
 </div>
 
 
@@ -206,24 +183,18 @@ Mint Cloud
 
 
 
-<!-- 每日习惯 -->
-
-
 <section class="card">
 
 
 <div class="section-header">
 
 
-<div class="section-title">
-
+<h2>
 🌿 每日习惯
-
-</div>
-
+</h2>
 
 
-<button onclick="openRoutineModal()">
+<button id="addRoutineBtn">
 
 ＋ 添加
 
@@ -249,24 +220,18 @@ Mint Cloud
 
 
 
-<!-- 灵感 -->
-
-
 <section class="card">
 
 
 <div class="section-header">
 
 
-<div class="section-title">
-
+<h2>
 💡 灵感收集
-
-</div>
-
+</h2>
 
 
-<button onclick="addIdea()">
+<button id="addIdeaBtn">
 
 ＋ 新想法
 
@@ -279,8 +244,8 @@ Mint Cloud
 
 <div id="ideaList">
 
-
 </div>
+
 
 
 </section>
@@ -293,18 +258,14 @@ Mint Cloud
 
 
 
-<!-- 工作统计 -->
-
-
 <section class="card">
 
 
-<div class="section-title">
+<h2>
 
 📈 工作复盘
 
-</div>
-
+</h2>
 
 
 <div class="statistics">
@@ -331,13 +292,12 @@ Mint Cloud
 累计完成
 </p>
 
-<strong id="totalDone">
+<strong id="allDone">
 0
 </strong>
 
 
 </div>
-
 
 
 
@@ -347,8 +307,7 @@ Mint Cloud
 任务数量
 </p>
 
-
-<strong id="taskTotal">
+<strong id="taskNumber">
 0
 </strong>
 
@@ -356,8 +315,8 @@ Mint Cloud
 </div>
 
 
-</div>
 
+</div>
 
 
 </section>
@@ -370,23 +329,18 @@ Mint Cloud
 
 
 
-<!-- 分类管理 -->
-
-
 <section class="card">
 
 
 <div class="section-header">
 
 
-<div class="section-title">
-
+<h2>
 🏷 分类管理
+</h2>
 
-</div>
 
-
-<button onclick="openCategoryModal()">
+<button id="addCategoryBtn">
 
 ＋ 新分类
 
@@ -396,9 +350,7 @@ Mint Cloud
 </div>
 
 
-
 <div id="categoryList">
-
 
 </div>
 
@@ -414,107 +366,102 @@ Mint Cloud
 
 
 
-<!-- 主题 -->
-
-
 <section class="card">
 
 
-<div class="section-title">
+<h2>
 
 🎨 Theme Studio
 
-</div>
+</h2>
 
 
 
 <div class="theme-grid">
 
 
-
-<button onclick="changeTheme('mint')">
+<button data-theme="mint">
 
 🍃 Mint Cloud
 
 </button>
 
 
-<button onclick="changeTheme('sakura')">
+<button data-theme="sakura">
 
 🌸 Sakura Milk
 
 </button>
 
 
-<button onclick="changeTheme('lavender')">
+<button data-theme="lavender">
 
 💜 Lavender Mist
 
 </button>
 
 
-<button onclick="changeTheme('babyblue')">
+<button data-theme="blue">
 
 ☁ Baby Blue
 
 </button>
 
 
-<button onclick="changeTheme('vanilla')">
+<button data-theme="vanilla">
 
 🧁 Vanilla Cream
 
 </button>
 
 
-<button onclick="changeTheme('aqua')">
+<button data-theme="aqua">
 
 🫧 Aqua Glass
 
 </button>
 
 
-<button onclick="changeTheme('peach')">
+<button data-theme="peach">
 
 🍑 Peach Soda
 
 </button>
 
 
-<button onclick="changeTheme('moon')">
+<button data-theme="moon">
 
 🌙 Moon Purple
 
 </button>
 
 
-<button onclick="changeTheme('ice')">
+<button data-theme="ice">
 
 🩵 Ice Blue
 
 </button>
 
 
-<button onclick="changeTheme('lilac')">
+<button data-theme="lilac">
 
 🪻 Lilac Pink
 
 </button>
 
 
-<button onclick="changeTheme('pearl')">
+<button data-theme="pearl">
 
 🐚 Pearl White
 
 </button>
 
 
-<button onclick="changeTheme('teddy')">
+<button data-theme="teddy">
 
 🧸 Teddy Beige
 
 </button>
-
 
 
 </div>
@@ -527,18 +474,9 @@ Mint Cloud
 
 
 </div>
-
-
-
-
-
-
-
-
-
-<!-- ==================
+<!-- ======================
 任务弹窗
-================== -->
+====================== -->
 
 
 <div class="modal hidden" id="taskModal">
@@ -558,7 +496,8 @@ Mint Cloud
 </label>
 
 
-<input id="taskName"
+<input 
+id="taskName"
 placeholder="例如：优化吸盘挂钩详情页">
 
 
@@ -570,7 +509,8 @@ placeholder="例如：优化吸盘挂钩详情页">
 </label>
 
 
-<input id="taskProject"
+<input
+id="taskProject"
 placeholder="例如：bydoll">
 
 
@@ -590,6 +530,8 @@ placeholder="例如：bydoll">
 
 
 
+
+
 <label>
 优先级
 </label>
@@ -600,20 +542,27 @@ placeholder="例如：bydoll">
 
 <option>
 ⭐ 高
+
 </option>
 
 
-<option>
+<option selected>
+
 普通
+
 </option>
 
 
 <option>
+
 低
+
 </option>
 
 
 </select>
+
+
 
 
 
@@ -625,16 +574,20 @@ placeholder="例如：bydoll">
 
 <div>
 
+
 <label>
 开始时间
 </label>
 
 
-<input 
+<input
 type="time"
-id="startTime">
+id="taskStart">
+
 
 </div>
+
+
 
 
 
@@ -648,13 +601,14 @@ id="startTime">
 
 <input
 type="time"
-id="endTime">
+id="taskEnd">
 
 
 </div>
 
 
 </div>
+
 
 
 
@@ -671,27 +625,37 @@ id="endTime">
 
 
 <option value="none">
+
 不循环
+
 </option>
 
 
 <option value="daily">
+
 每天
+
 </option>
 
 
 <option value="workday">
+
 工作日
+
 </option>
 
 
 <option value="weekly">
+
 每周
+
 </option>
 
 
 <option value="monthly">
+
 每月
+
 </option>
 
 
@@ -708,8 +672,10 @@ id="endTime">
 </label>
 
 
-<textarea 
+<textarea
+
 id="taskNote"
+
 placeholder="记录任务细节...">
 
 </textarea>
@@ -718,10 +684,12 @@ placeholder="记录任务细节...">
 
 
 
+
+
 <div class="modal-buttons">
 
 
-<button onclick="closeModal('taskModal')">
+<button id="closeTask">
 
 取消
 
@@ -729,7 +697,7 @@ placeholder="记录任务细节...">
 
 
 
-<button onclick="saveTask()">
+<button id="saveTask">
 
 保存
 
@@ -754,9 +722,10 @@ placeholder="记录任务细节...">
 
 
 
-<!-- ==================
+
+<!-- ======================
 习惯弹窗
-================== -->
+====================== -->
 
 
 <div class="modal hidden" id="routineModal">
@@ -770,39 +739,18 @@ placeholder="记录任务细节...">
 </h2>
 
 
+
 <input
+
 id="routineName"
+
 placeholder="例如：英语学习30分钟">
-
-
-
-<select id="routineRepeat">
-
-
-<option>
-每天
-</option>
-
-
-<option>
-工作日
-</option>
-
-
-<option>
-每周
-</option>
-
-
-
-</select>
-
 
 
 <div class="modal-buttons">
 
 
-<button onclick="closeModal('routineModal')">
+<button id="closeRoutine">
 
 取消
 
@@ -810,7 +758,7 @@ placeholder="例如：英语学习30分钟">
 
 
 
-<button onclick="saveRoutine()">
+<button id="saveRoutine">
 
 保存
 
@@ -833,9 +781,9 @@ placeholder="例如：英语学习30分钟">
 
 
 
-<!-- ==================
+<!-- ======================
 分类弹窗
-================== -->
+====================== -->
 
 
 <div class="modal hidden" id="categoryModal">
@@ -845,33 +793,104 @@ placeholder="例如：英语学习30分钟">
 
 
 <h2>
-创建分类
+新建分类
 </h2>
 
 
 
 <input
+
 id="categoryIcon"
+
 placeholder="输入图标，例如 🎨">
 
 
+
 <input
+
 id="categoryName"
+
 placeholder="分类名称">
+
+
+
 
 
 
 <div class="modal-buttons">
 
 
-<button onclick="closeModal('categoryModal')">
+<button id="closeCategory">
 
 取消
 
 </button>
 
 
-<button onclick="saveCategory()">
+
+<button id="saveCategory">
+
+保存
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- ======================
+灵感弹窗
+====================== -->
+
+
+<div class="modal hidden" id="ideaModal">
+
+
+<div class="modal-box">
+
+
+<h2>
+记录灵感
+</h2>
+
+
+
+<textarea
+
+id="ideaText"
+
+placeholder="写下你的想法...">
+
+</textarea>
+
+
+
+<div class="modal-buttons">
+
+
+<button id="closeIdea">
+
+取消
+
+</button>
+
+
+
+<button id="saveIdea">
 
 保存
 
