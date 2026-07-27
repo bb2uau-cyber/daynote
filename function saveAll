@@ -1,95 +1,79 @@
 /* ==========================
- Daynote V2.0
- Personal Work OS
+Daynote V3.1
+Personal Work OS
 ========================== */
 
 
+// ==========================
+// 数据
+// ==========================
 
-// ===== 数据 =====
 
-
-let tasks = JSON.parse(
-    localStorage.getItem("tasks")
+let tasks =
+JSON.parse(
+localStorage.getItem("tasks")
 ) || [];
-let categories = JSON.parse(
+
+
+
+let categories =
+JSON.parse(
 localStorage.getItem("categories")
 ) || [
 
 {
-name:"视觉设计",
-icon:"🎨"
+icon:"🎨",
+name:"视觉设计"
 },
 
 {
-name:"产品开发",
-icon:"📦"
+icon:"📦",
+name:"产品开发"
 },
 
 {
-name:"AI灵感",
-icon:"💡"
+icon:"💡",
+name:"AI灵感"
+},
+
+{
+icon:"📊",
+name:"数据分析"
 }
 
 ];
-function renderCategories(){
-
-let select =
-document.getElementById(
-"taskCategory"
-);
 
 
-select.innerHTML =
-`
-<option>
-选择分类
-</option>
-`;
 
-
-categories.forEach((c)=>{
-
-
-select.innerHTML +=
-
-`
-<option value="${c.name}">
-${c.icon} ${c.name}
-</option>
-
-`;
-
-});
-
-
-}
-
-
-let routines = JSON.parse(
-    localStorage.getItem("routines")
+let routines =
+JSON.parse(
+localStorage.getItem("routines")
 ) || [
 
-    {
-        name:"查看店铺数据",
-        done:false
-    },
+{
+name:"查看店铺数据",
+done:false
+},
 
-    {
-        name:"回复工作消息",
-        done:false
-    },
-
-    {
-        name:"整理今日素材",
-        done:false
-    }
+{
+name:"整理今日素材",
+done:false
+}
 
 ];
 
 
 
-let ideas = JSON.parse(
-    localStorage.getItem("ideas")
+let ideas =
+JSON.parse(
+localStorage.getItem("ideas")
+) || [];
+
+
+
+let focus =
+JSON.parse(
+localStorage.getItem("focus")
 ) || [];
 
 
@@ -97,7 +81,12 @@ let ideas = JSON.parse(
 
 
 
-// ===== 初始化 =====
+
+
+
+// ==========================
+// 初始化
+// ==========================
 
 
 document.addEventListener(
@@ -105,22 +94,31 @@ document.addEventListener(
 ()=>{
 
 
-    loadTheme();
-
-    showDate();
-
-    renderCategories();
-
-    renderTasks();
-
-    renderRoutines();
-
-    renderIdeas();
-
-    updateStatistics();
+initDate();
 
 
-    bindEvents();
+loadTheme();
+
+
+renderTasks();
+
+
+renderCategories();
+
+
+renderRoutines();
+
+
+renderIdeas();
+
+
+renderFocus();
+
+
+updateStatistics();
+
+
+bindEvents();
 
 
 });
@@ -130,27 +128,43 @@ document.addEventListener(
 
 
 
-// ===== 日期 =====
 
 
-function showDate(){
-
-    let date =
-    new Date();
 
 
-    document
-    .getElementById("todayDate")
-    .innerText =
-    date.toLocaleDateString(
-        "zh-CN",
-        {
-            year:"numeric",
-            month:"2-digit",
-            day:"2-digit",
-            weekday:"long"
-        }
-    );
+// ==========================
+// 日期
+// ==========================
+
+
+function initDate(){
+
+
+let d =
+new Date();
+
+
+document
+.getElementById("todayDate")
+.innerText =
+
+
+d.toLocaleDateString(
+"zh-CN",
+{
+
+year:"numeric",
+
+month:"long",
+
+day:"numeric",
+
+weekday:"long"
+
+}
+
+);
+
 
 }
 
@@ -161,36 +175,22 @@ function showDate(){
 
 
 
-// ==========================
-// 任务系统
-// ==========================
 
-
+// ==========================
+// 事件绑定
+// ==========================
 
 
 function bindEvents(){
 
 
- document
-.getElementById(
-"manageCategoryBtn"
-)
-.onclick =
-addCategory;
 
-
-// 打开任务弹窗
+// 新任务
 
 document
 .getElementById("addTaskBtn")
 .onclick =
-()=>{
-
-    openModal(
-        "taskModal"
-    );
-
-};
+()=>openModal("taskModal");
 
 
 
@@ -205,18 +205,10 @@ saveTask;
 
 
 
-// 关闭
-
 document
-.getElementById("cancelTask")
+.getElementById("closeTask")
 .onclick =
-()=>{
-
-closeModal(
-"taskModal"
-);
-
-};
+()=>closeModal("taskModal");
 
 
 
@@ -224,18 +216,10 @@ closeModal(
 
 // 习惯
 
-
 document
 .getElementById("addRoutineBtn")
 .onclick =
-()=>{
-
-openModal(
-"routineModal"
-);
-
-};
-
+()=>openModal("routineModal");
 
 
 
@@ -247,15 +231,34 @@ saveRoutine;
 
 
 document
-.getElementById("cancelRoutine")
+.getElementById("closeRoutine")
 .onclick =
-()=>{
+()=>closeModal("routineModal");
 
-closeModal(
-"routineModal"
-);
 
-};
+
+
+
+// 分类
+
+document
+.getElementById("addCategoryBtn")
+.onclick =
+()=>openModal("categoryModal");
+
+
+
+document
+.getElementById("saveCategory")
+.onclick =
+saveCategory;
+
+
+
+document
+.getElementById("closeCategory")
+.onclick =
+()=>closeModal("categoryModal");
 
 
 
@@ -267,23 +270,50 @@ closeModal(
 document
 .getElementById("addIdeaBtn")
 .onclick =
-addIdea;
+()=>openModal("ideaModal");
+
+
+
+document
+.getElementById("saveIdea")
+.onclick =
+saveIdea;
+
+
+
+document
+.getElementById("closeIdea")
+.onclick =
+()=>closeModal("ideaModal");
+
+
+
+
+
+
+
+// 今日重点
+
+document
+.getElementById("addFocusBtn")
+.onclick =
+addFocus;
+
+
 
 
 
 
 // 主题
 
+
 document
-.querySelectorAll(
-".theme-box button"
-)
+.querySelectorAll(".theme-grid button")
 .forEach(btn=>{
 
 
 btn.onclick =
 ()=>{
-
 
 changeTheme(
 btn.dataset.theme
@@ -306,14 +336,20 @@ btn.dataset.theme
 
 
 
-function saveTask(){
 
+// ==========================
+// 任务
+// ==========================
+
+
+function saveTask(){
 
 
 let name =
 document
 .getElementById("taskName")
-.value.trim();
+.value
+.trim();
 
 
 
@@ -325,59 +361,80 @@ return;
 let task={
 
 
-id:
-Date.now(),
+id:Date.now(),
 
 
 name:name,
 
 
 project:
+
 document
 .getElementById("taskProject")
 .value,
 
 
+
 category:
+
 document
 .getElementById("taskCategory")
 .value,
 
 
-start:
+
+priority:
+
 document
-.getElementById("startTime")
+.getElementById("taskPriority")
 .value,
+
+
+
+start:
+
+document
+.getElementById("taskStart")
+.value,
+
 
 
 end:
+
 document
-.getElementById("endTime")
+.getElementById("taskEnd")
 .value,
+
 
 
 repeat:
+
 document
-.getElementById("repeatTask")
+.getElementById("taskRepeat")
 .value,
 
 
+
 note:
+
 document
 .getElementById("taskNote")
 .value,
 
 
+
 created:
+
 new Date()
 .toLocaleString(),
 
 
-finished:null,
+
+done:false,
 
 
-done:false
 
+finished:""
 
 };
 
@@ -386,23 +443,13 @@ done:false
 tasks.unshift(task);
 
 
-
 saveData();
-
 
 
 renderTasks();
 
 
-
-closeModal(
-"taskModal"
-);
-
-
-
-clearTaskForm();
-
+closeModal("taskModal");
 
 
 }
@@ -410,16 +457,8 @@ clearTaskForm();
 
 
 
-
-
-
-
-
-
-// 渲染任务
-
-
 function renderTasks(){
+
 
 
 let box =
@@ -427,46 +466,24 @@ document
 .getElementById("taskList");
 
 
+
 box.innerHTML="";
-
-
-
-if(tasks.length===0){
-
-
-box.innerHTML=
-
-`
-<div class="empty">
-
-今天还没有任务 ✨
-
-</div>
-`;
-
-return;
-
-
-}
 
 
 
 tasks.forEach(task=>{
 
 
-let item =
+let div =
 document
 .createElement("div");
 
 
-
-item.className =
-"task-item";
+div.className="task-item";
 
 
 
-
-item.innerHTML =
+div.innerHTML=
 
 
 `
@@ -474,21 +491,14 @@ item.innerHTML =
 <div class="task-main">
 
 
-<div 
-class="checkbox ${task.done?"done":""}"
-onclick="toggleTask(${task.id})">
-</div>
+<div class="checkbox ${task.done?"done":""}"></div>
 
 
 
 <div>
 
 
-<div class="
-${task.done?
-'task-title task-done':
-'task-title'}
-">
+<div class="task-title ${task.done?"task-done":""}">
 
 ${task.name}
 
@@ -498,64 +508,33 @@ ${task.name}
 
 <div class="task-meta">
 
-
-${task.category || ""}
-
-&nbsp;
-
-${task.project || ""}
-
+${task.category}
 
 
 <br>
 
+📌 ${task.project || "无项目"}
 
-⏰
 
-${task.start || "--"}
+<br>
+
+⏰ ${task.start || "--"}
 
 -
 
 ${task.end || "--"}
 
 
-
 <br>
 
-
-创建：
-
-${task.created}
-
-
-${
-task.finished?
-
-"<br>完成："+task.finished
-
-:""
-
-}
-
-
-
-${
-task.repeat!="none"?
-
-"<br>🔁 "+repeatText(task.repeat)
-
-:""
-
-}
-
+${task.finished ? 
+"完成："+task.finished:""}
 
 </div>
 
 
 
-
-${
-task.note?
+${task.note ?
 
 `
 <div class="note">
@@ -564,47 +543,45 @@ task.note?
 
 </div>
 `
-
-:""
-
-}
-
-
-
-
-</div>
+:""}
 
 
 </div>
 
 
 
-<div>
+</div>
 
 
-<button
 
-onclick="deleteTask(${task.id})"
-
-style="
-background:none;
-color:#aaa;
-">
+<button class="delete-btn">
 
 删除
 
 </button>
 
 
-</div>
-
-
-
 `;
 
 
 
-box.appendChild(item);
+
+
+div
+.querySelector(".checkbox")
+.onclick =
+()=>toggleTask(task.id);
+
+
+
+div
+.querySelector(".delete-btn")
+.onclick =
+()=>deleteTask(task.id);
+
+
+
+box.appendChild(div);
 
 
 
@@ -624,25 +601,13 @@ updateStatistics();
 
 
 
-
-
-
-
-// 完成 / 取消完成
-
-
 function toggleTask(id){
 
 
 let task =
 tasks.find(
-t=>t.id===id
+x=>x.id===id
 );
-
-
-
-if(!task)
-return;
 
 
 
@@ -651,24 +616,14 @@ task.done =
 
 
 
-if(task.done){
-
-
 task.finished =
+
+task.done?
+
 new Date()
-.toLocaleTimeString();
+.toLocaleTimeString():
 
-
-
-}
-
-else{
-
-
-task.finished=null;
-
-
-}
+"";
 
 
 
@@ -678,10 +633,7 @@ saveData();
 renderTasks();
 
 
-
 }
-
-
 
 
 
@@ -694,9 +646,8 @@ function deleteTask(id){
 
 tasks =
 tasks.filter(
-t=>t.id!==id
+x=>x.id!==id
 );
-
 
 
 saveData();
@@ -714,26 +665,167 @@ renderTasks();
 
 
 
-function repeatText(type){
+
+// ==========================
+// 分类
+// ==========================
 
 
-let map={
 
-daily:"每天",
+function renderCategories(){
 
-workday:"工作日",
 
-weekly:"每周",
 
-monthly:"每月"
+let select =
+document
+.getElementById("taskCategory");
+
+
+
+select.innerHTML=
+"<option>选择分类</option>";
+
+
+
+categories.forEach(c=>{
+
+
+select.innerHTML +=
+
+
+`
+
+<option>
+
+${c.icon} ${c.name}
+
+</option>
+
+`;
+
+
+});
+
+
+
+let box =
+document
+.getElementById("categoryList");
+
+
+
+box.innerHTML="";
+
+
+
+categories.forEach((c,i)=>{
+
+
+box.innerHTML +=
+
+
+`
+
+<div class="category-tag">
+
+${c.icon} ${c.name}
+
+
+<button class="remove-category"
+data-id="${i}">
+×
+</button>
+
+
+</div>
+
+`;
+
+
+
+});
+
+
+
+
+document
+.querySelectorAll(".remove-category")
+.forEach(btn=>{
+
+
+btn.onclick=()=>{
+
+
+categories.splice(
+btn.dataset.id,
+1
+);
+
+
+saveData();
+
+
+renderCategories();
 
 
 };
 
 
-return map[type] || "";
+});
+
+
 
 }
+
+
+
+
+
+function saveCategory(){
+
+
+
+let icon =
+document
+.getElementById("categoryIcon")
+.value
+.trim();
+
+
+
+let name =
+document
+.getElementById("categoryName")
+.value
+.trim();
+
+
+
+if(!name)
+return;
+
+
+
+categories.push({
+
+icon:icon || "📌",
+
+name:name
+
+});
+
+
+saveData();
+
+
+renderCategories();
+
+
+closeModal("categoryModal");
+
+
+}
+
 
 
 
@@ -761,8 +853,7 @@ box.innerHTML="";
 
 
 
-routines.forEach(
-(r,i)=>{
+routines.forEach((r,i)=>{
 
 
 box.innerHTML +=
@@ -773,24 +864,9 @@ box.innerHTML +=
 <div class="task-item">
 
 
-<div class="task-main">
-
-
-<div
-
-class="
-checkbox ${r.done?"done":""}
-"
-
-onclick="
-toggleRoutine(${i})
-">
-
-</div>
-
-
-
 <div>
+
+${r.done?"✅":"⭕"}
 
 ${r.name}
 
@@ -798,24 +874,10 @@ ${r.name}
 </div>
 
 
-</div>
-
-
-<button
-
-onclick="
-deleteRoutine(${i})
-"
-
-style="
-background:none;
-color:#aaa;
-">
-
+<button class="delete-routine"
+data-id="${i}">
 删除
-
 </button>
-
 
 
 </div>
@@ -823,9 +885,34 @@ color:#aaa;
 `;
 
 
-
 });
 
+
+
+document
+.querySelectorAll(".delete-routine")
+.forEach(btn=>{
+
+
+btn.onclick=()=>{
+
+
+routines.splice(
+btn.dataset.id,
+1
+);
+
+
+saveData();
+
+
+renderRoutines();
+
+
+};
+
+
+});
 
 
 }
@@ -836,15 +923,14 @@ color:#aaa;
 
 
 
-
 function saveRoutine(){
-
 
 
 let name =
 document
 .getElementById("routineName")
-.value.trim();
+.value
+.trim();
 
 
 
@@ -862,62 +948,13 @@ done:false
 });
 
 
-
 saveData();
 
 
 renderRoutines();
 
 
-closeModal(
-"routineModal"
-);
-
-
-document
-.getElementById("routineName")
-.value="";
-
-
-}
-
-
-
-
-
-
-
-function toggleRoutine(i){
-
-
-routines[i].done =
-!routines[i].done;
-
-
-saveData();
-
-
-renderRoutines();
-
-
-
-}
-
-
-
-
-function deleteRoutine(i){
-
-
-routines.splice(
-i,1
-);
-
-
-saveData();
-
-
-renderRoutines();
+closeModal("routineModal");
 
 
 }
@@ -935,13 +972,14 @@ renderRoutines();
 // ==========================
 
 
-function addIdea(){
+function saveIdea(){
 
 
 let text =
-prompt(
-"记录一个灵感："
-);
+document
+.getElementById("ideaText")
+.value
+.trim();
 
 
 
@@ -958,7 +996,6 @@ time:
 new Date()
 .toLocaleString()
 
-
 });
 
 
@@ -968,6 +1005,8 @@ saveData();
 
 renderIdeas();
 
+
+closeModal("ideaModal");
 
 
 }
@@ -984,13 +1023,11 @@ document
 .getElementById("ideaList");
 
 
-
 box.innerHTML="";
 
 
 
-ideas.forEach(
-idea=>{
+ideas.forEach(i=>{
 
 
 box.innerHTML +=
@@ -1000,21 +1037,94 @@ box.innerHTML +=
 
 <div class="note">
 
-
-💡 ${idea.text}
+💡 ${i.text}
 
 <br>
 
-<small>
-
-${idea.time}
-
-</small>
-
+${i.time}
 
 </div>
 
 `;
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================
+// 今日重点
+// ==========================
+
+
+
+function addFocus(){
+
+
+let text =
+prompt(
+"今日重点"
+);
+
+
+
+if(!text)
+return;
+
+
+
+focus.push(text);
+
+
+saveData();
+
+
+renderFocus();
+
+
+}
+
+
+
+
+
+function renderFocus(){
+
+
+let box =
+document
+.getElementById("focusList");
+
+
+box.innerHTML="";
+
+
+
+focus.forEach(f=>{
+
+
+box.innerHTML +=
+
+
+`
+
+<div class="note">
+
+⭐ ${f}
+
+</div>
+
+`;
+
 
 
 });
@@ -1045,7 +1155,6 @@ t=>t.done
 ).length;
 
 
-
 document
 .getElementById("todayDone")
 .innerText =
@@ -1054,53 +1163,53 @@ done;
 
 
 document
-.getElementById("totalDone")
+.getElementById("allDone")
 .innerText =
-
-localStorage.getItem(
-"totalDone"
-) || done;
-
+localStorage.getItem("allDone")
+||
+done;
 
 
-let total =
+
+document
+.getElementById("taskNumber")
+.innerText =
 tasks.length;
 
 
 
-let rate =
-total?
+let percent =
+tasks.length?
 
 Math.round(
-done/total*100
-)
+done/tasks.length*100
+):
 
-:0;
+0;
 
 
 
 document
-.getElementById("completeCount")
+.getElementById("progressText")
 .innerText =
 
-`${done}/${total}`;
+`${done}/${tasks.length}`;
 
 
 
 document
-.getElementById("completeRate")
+.getElementById("progressPercent")
 .innerText =
 
-rate+"%";
+percent+"%";
 
 
 
 document
-.getElementById("progressLine")
+.getElementById("progressInner")
 .style.width =
 
-rate+"%";
-
+percent+"%";
 
 
 }
@@ -1118,19 +1227,19 @@ rate+"%";
 // ==========================
 
 
+function changeTheme(theme){
 
-function changeTheme(name){
 
-
-document.body.className =
-name;
+document.body.className=
+theme;
 
 
 
 localStorage.setItem(
 "theme",
-name
+theme
 );
+
 
 
 }
@@ -1147,17 +1256,14 @@ localStorage.getItem(
 
 
 
-if(theme){
+if(theme)
 
-document.body.className =
+document.body.className=
 theme;
 
-}
-
 
 
 }
-
 
 
 
@@ -1171,35 +1277,6 @@ theme;
 // ==========================
 
 
-function saveData(){
-
-
-localStorage.setItem(
-"tasks",
-JSON.stringify(tasks)
-);
-
-
-
-localStorage.setItem(
-"routines",
-JSON.stringify(routines)
-);
-
-
-
-localStorage.setItem(
-"ideas",
-JSON.stringify(ideas)
-);
-
-
-
-}
-
-
-
-
 function openModal(id){
 
 
@@ -1210,7 +1287,6 @@ document
 
 
 }
-
 
 
 
@@ -1228,57 +1304,14 @@ document
 
 
 
-function clearTaskForm(){
+
+function saveData(){
 
 
-[
-"taskName",
-"taskProject",
-"startTime",
-"endTime",
-"taskNote"
-
-]
-
-.forEach(id=>{
-
-
-document
-.getElementById(id)
-.value="";
-
-
-});
-
-
-}
-function addCategory(){
-
-
-let name =
-prompt("输入分类名称");
-
-
-if(!name)return;
-
-
-
-let icon =
-prompt(
-"输入图标，例如 🎨"
-)
-||
-"📌";
-
-
-
-categories.push({
-
-name:name,
-
-icon:icon
-
-});
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
 
 
 localStorage.setItem(
@@ -1287,43 +1320,22 @@ JSON.stringify(categories)
 );
 
 
-renderCategories();
+localStorage.setItem(
+"routines",
+JSON.stringify(routines)
+);
 
 
-}
-
-// =======================
-// 弹窗打开控制
-// =======================
-
-
-function openTaskModal(){
-
-    document
-    .getElementById("taskModal")
-    .classList
-    .remove("hidden");
-
-}
+localStorage.setItem(
+"ideas",
+JSON.stringify(ideas)
+);
 
 
+localStorage.setItem(
+"focus",
+JSON.stringify(focus)
+);
 
-function openRoutineModal(){
-
-    document
-    .getElementById("routineModal")
-    .classList
-    .remove("hidden");
-
-}
-
-
-
-function openCategoryModal(){
-
-    document
-    .getElementById("categoryModal")
-    .classList
-    .remove("hidden");
 
 }
