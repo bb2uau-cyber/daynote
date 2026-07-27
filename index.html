@@ -11,9 +11,7 @@
 Daynote · Life Planner
 </title>
 
-
 <link rel="stylesheet" href="style.css">
-
 
 </head>
 
@@ -21,77 +19,37 @@ Daynote · Life Planner
 <body>
 
 
-<div class="paper-decoration"></div>
-
-
 <div class="app">
 
 
+<!-- 顶部 -->
 
-<!-- =================
-顶部
-================= -->
-
-
-<header class="journal-header">
-
-
-<div class="header-left">
-
-
-<div class="greeting-icon" id="greetingIcon">
-☀️
-</div>
+<header class="header">
 
 
 <div>
 
-
 <h1 id="greeting">
-
-Good Morning
-
+🌙 Good Evening
 </h1>
 
 
-<p id="greetingText">
-
-今天也慢慢开始吧
-
-</p>
-
-
-
-<p id="todayDate">
-
+<p id="date">
 2026年7月27日
-
 </p>
 
 
+<p id="subtitle">
+今天辛苦啦，记录一下吧
+</p>
+
 </div>
 
 
-</div>
 
+<div class="theme-tag">
 
-
-
-
-<div class="theme-pill">
-
-
-<span>
-🍃
-</span>
-
-
-<span id="themeName">
-
-Mint Diary
-
-</span>
-
+🍃 Mint Diary
 
 </div>
 
@@ -104,75 +62,53 @@ Mint Diary
 
 
 
+<!-- 今日心情 -->
 
-<!-- =================
-今日心情
-================= -->
-
-
-<section class="memo-card mood-card">
-
-
-<div class="tape"></div>
+<section class="card">
 
 
 <h2>
-
 🌷 今日心情
-
 </h2>
-
 
 
 <div class="mood-list">
 
 
-<button data-mood="🌸 开心">
-
+<button onclick="setMood('🌸 开心')">
 🌸
-
 </button>
 
 
-<button data-mood="🌱 平静">
-
+<button onclick="setMood('🌱 平静')">
 🌱
-
 </button>
 
 
-<button data-mood="☁ 普通">
-
+<button onclick="setMood('☁ 普通')">
 ☁
-
 </button>
 
 
-<button data-mood="🌧 疲惫">
-
+<button onclick="setMood('🌧 疲惫')">
 🌧
-
 </button>
 
 
-<button data-mood="🌙 emo">
-
+<button onclick="setMood('🌙 emo')">
 🌙
-
 </button>
 
 
 </div>
 
 
-<p id="todayMood">
 
+<p id="moodText">
 今天是什么心情呢？
-
 </p>
 
 
-
 </section>
 
 
@@ -181,134 +117,33 @@ Mint Diary
 
 
 
+<!-- 今日重点 -->
+
+<section class="card">
 
 
-<!-- =================
-日历
-================= -->
-
-
-<section class="memo-card calendar-card">
-
-
-<div class="card-title">
+<div class="title-row">
 
 
 <h2>
-
-📅 我的日历
-
-</h2>
-
-
-<div>
-
-
-<button id="prevMonth">
-
-‹
-
-</button>
-
-
-<span id="calendarTitle">
-
-July 2026
-
-</span>
-
-
-<button id="nextMonth">
-
-›
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="week">
-
-
-<span>
-一
-</span>
-
-<span>
-二
-</span>
-
-<span>
-三
-</span>
-
-<span>
-四
-</span>
-
-<span>
-五
-</span>
-
-<span>
-六
-</span>
-
-<span>
-日
-</span>
-
-
-</div>
-
-
-
-<div id="calendarGrid">
-
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-
-
-<!-- =================
-今日重点
-================= -->
-
-
-<section class="memo-card">
-
-
-<div class="card-title">
-
-
-<h2>
-
 ⭐ 今日重点
-
 </h2>
 
 
+</div>
 
-<button id="addFocusBtn">
 
-＋
 
+<div class="input-row">
+
+
+<input
+id="focusInput"
+placeholder="今天最重要的一件事">
+
+
+<button onclick="addFocus()">
+添加
 </button>
 
 
@@ -330,29 +165,27 @@ July 2026
 
 
 
+<!-- 今日待办 -->
 
-<!-- =================
-今日待办
-================= -->
-
-
-<section class="memo-card">
-
-
-<div class="card-title">
+<section class="card">
 
 
 <h2>
-
 ☁ 今日待办
-
 </h2>
 
 
-<button id="addTaskBtn">
 
-＋
+<div class="input-row">
 
+
+<input
+id="taskInput"
+placeholder="输入待办任务">
+
+
+<button onclick="addTask()">
+添加
 </button>
 
 
@@ -362,7 +195,6 @@ July 2026
 
 <div id="taskList">
 
-
 </div>
 
 
@@ -376,39 +208,41 @@ July 2026
 
 
 
-<!-- =================
-每日习惯
-================= -->
+<!-- 每日习惯 -->
 
-
-<section class="memo-card">
-
-
-<div class="card-title">
+<section class="card">
 
 
 <h2>
-
 🌿 每日习惯
-
 </h2>
 
 
-<button id="addRoutineBtn">
+<div id="habitList">
 
-＋
 
-</button>
+<div class="habit">
 
+☐ 英语学习
+
+</div>
+
+
+<div class="habit">
+
+☐ 运动
 
 </div>
 
 
+<div class="habit">
 
-<div id="routineList">
+☐ 整理素材
 
 </div>
 
+
+</div>
 
 
 </section>
@@ -420,40 +254,33 @@ July 2026
 
 
 
-<!-- =================
-灵感
-================= -->
 
+<!-- 灵感 -->
 
-<section class="memo-card">
-
-
-<div class="card-title">
+<section class="card">
 
 
 <h2>
-
 💡 灵感收集
-
 </h2>
 
 
-<button id="addIdeaBtn">
 
-＋
+<textarea
+id="ideaInput"
+placeholder="记录突然想到的想法...">
+</textarea>
 
+
+<button onclick="saveIdea()">
+保存灵感
 </button>
-
-
-</div>
 
 
 
 <div id="ideaList">
 
-
 </div>
-
 
 
 </section>
@@ -465,40 +292,34 @@ July 2026
 
 
 
+<!-- 今日记录 -->
 
-<!-- =================
-今日记录
-================= -->
-
-
-<section class="memo-card">
-
-
-<div class="card-title">
+<section class="card">
 
 
 <h2>
-
-📷 今日记录
-
+📖 今日记录
 </h2>
 
 
-<button id="addDiaryBtn">
 
-＋
+<textarea
+id="noteInput"
+placeholder="写下今天发生的小事...">
+</textarea>
 
+
+
+<button onclick="saveNote()">
+保存记录
 </button>
 
 
-</div>
 
-
-
-<div id="diaryList">
-
+<div id="noteShow">
 
 </div>
+
 
 
 </section>
@@ -510,206 +331,38 @@ July 2026
 
 
 
-<!-- =================
-工作复盘
-================= -->
+<!-- 主题 -->
 
 
-<section class="memo-card">
-
-
-<h2>
-
-📈 今日复盘
-
-</h2>
-
-
-<div class="statistics">
-
-
-<div>
-
-<p>
-完成
-</p>
-
-
-<strong id="todayDone">
-
-0
-
-</strong>
-
-
-</div>
-
-
-
-<div>
-
-<p>
-累计
-</p>
-
-
-<strong id="allDone">
-
-0
-
-</strong>
-
-
-</div>
-
-
-
-<div>
-
-<p>
-任务
-</p>
-
-
-<strong id="taskNumber">
-
-0
-
-</strong>
-
-
-</div>
-
-
-
-</div>
-
-
-</section>
-<!-- =================
-Theme Room
-================= -->
-
-
-<section class="memo-card">
+<section class="card">
 
 
 <h2>
-
 🎨 Theme Room
-
 </h2>
 
 
 
-<div class="theme-grid">
+<div class="theme-list">
 
 
-<button data-theme="mint">
-
-🍃
-
-Mint Diary
-
+<button onclick="changeTheme('mint')">
+🍃 薄荷绿
 </button>
 
 
-<button data-theme="sakura">
-
-🌸
-
-Sakura Letter
-
+<button onclick="changeTheme('pink')">
+🌸 樱花粉
 </button>
 
 
-<button data-theme="lavender">
-
-💜
-
-Lavender Night
-
+<button onclick="changeTheme('purple')">
+💜 薰衣草
 </button>
 
 
-<button data-theme="blue">
-
-🩵
-
-Cloud Blue
-
-</button>
-
-
-<button data-theme="vanilla">
-
-🧁
-
-Vanilla Cream
-
-</button>
-
-
-<button data-theme="aqua">
-
-🫧
-
-Aqua Glass
-
-</button>
-
-
-<button data-theme="peach">
-
-🍑
-
-Peach Soda
-
-</button>
-
-
-<button data-theme="moon">
-
-🌙
-
-Moon Purple
-
-</button>
-
-
-<button data-theme="ice">
-
-❄️
-
-Ice Blue
-
-</button>
-
-
-<button data-theme="lilac">
-
-🪻
-
-Lilac Pink
-
-</button>
-
-
-<button data-theme="pearl">
-
-🐚
-
-Pearl White
-
-</button>
-
-
-<button data-theme="teddy">
-
-🧸
-
-Teddy Cafe
-
+<button onclick="changeTheme('blue')">
+🩵 云朵蓝
 </button>
 
 
@@ -725,576 +378,6 @@ Teddy Cafe
 
 
 </div>
-
-
-
-
-
-
-
-
-
-<!-- =================
-任务弹窗
-================= -->
-
-
-<div class="modal hidden" id="taskModal">
-
-
-<div class="modal-box">
-
-
-<h2>
-
-☁ 新建任务
-
-</h2>
-
-
-
-<input 
-id="taskName"
-placeholder="今天要完成什么？">
-
-
-
-<input
-id="taskProject"
-placeholder="所属项目">
-
-
-
-
-<select id="taskCategory">
-
-
-</select>
-
-
-
-
-<select id="taskPriority">
-
-
-<option>
-
-⭐ 重要
-
-</option>
-
-
-<option>
-
-普通
-
-</option>
-
-
-<option>
-
-低优先级
-
-</option>
-
-
-</select>
-
-
-
-
-
-
-<div class="time-row">
-
-
-<input 
-type="time"
-id="taskStart">
-
-
-
-<input
-type="time"
-id="taskEnd">
-
-
-
-</div>
-
-
-
-
-
-
-<select id="taskRepeat">
-
-
-<option value="none">
-
-不循环
-
-</option>
-
-
-<option value="daily">
-
-每天
-
-</option>
-
-
-<option value="workday">
-
-工作日
-
-</option>
-
-
-<option value="weekly">
-
-每周
-
-</option>
-
-
-<option value="monthly">
-
-每月
-
-</option>
-
-
-</select>
-
-
-
-
-
-
-<textarea
-
-id="taskNote"
-
-placeholder="写一点备注...">
-
-</textarea>
-
-
-
-
-
-<div class="modal-buttons">
-
-
-<button id="closeTask">
-
-取消
-
-</button>
-
-
-
-<button id="saveTask">
-
-保存
-
-</button>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =================
-今日重点弹窗
-================= -->
-
-
-<div class="modal hidden" id="focusModal">
-
-
-<div class="modal-box">
-
-
-<h2>
-
-⭐ 今日重点
-
-</h2>
-
-
-
-<textarea
-
-id="focusText"
-
-placeholder="今天最重要的一件事...">
-
-</textarea>
-
-
-
-
-
-<div class="modal-buttons">
-
-
-<button id="closeFocus">
-
-取消
-
-</button>
-
-
-
-<button id="saveFocus">
-
-保存
-
-</button>
-
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =================
-每日习惯弹窗
-================= -->
-
-
-<div class="modal hidden" id="routineModal">
-
-
-<div class="modal-box">
-
-
-<h2>
-
-🌿 新习惯
-
-</h2>
-
-
-
-<input
-
-id="routineName"
-
-placeholder="例如：英语学习30分钟">
-
-
-<div class="modal-buttons">
-
-
-<button id="closeRoutine">
-
-取消
-
-</button>
-
-
-
-<button id="saveRoutine">
-
-保存
-
-</button>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =================
-分类弹窗
-================= -->
-
-
-<div class="modal hidden" id="categoryModal">
-
-
-<div class="modal-box">
-
-
-<h2>
-
-🏷 新分类
-
-</h2>
-
-
-
-<input
-
-id="categoryIcon"
-
-placeholder="图标，例如 🎨">
-
-
-
-<input
-
-id="categoryName"
-
-placeholder="分类名称">
-
-
-
-<div class="modal-buttons">
-
-
-<button id="closeCategory">
-
-取消
-
-</button>
-
-
-
-<button id="saveCategory">
-
-保存
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =================
-灵感弹窗
-================= -->
-
-
-<div class="modal hidden" id="ideaModal">
-
-
-<div class="modal-box">
-
-
-<h2>
-
-💡 记录灵感
-
-</h2>
-
-
-
-<textarea
-
-id="ideaText"
-
-placeholder="突然想到什么？">
-
-</textarea>
-
-
-
-
-<div class="modal-buttons">
-
-
-<button id="closeIdea">
-
-取消
-
-</button>
-
-
-
-<button id="saveIdea">
-
-保存
-
-</button>
-
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =================
-今日记录弹窗
-================= -->
-
-
-<div class="modal hidden" id="diaryModal">
-
-
-<div class="modal-box">
-
-
-<h2>
-
-📷 今日记录
-
-</h2>
-
-
-
-<textarea
-
-id="diaryText"
-
-placeholder="记录今天发生的小事...">
-
-</textarea>
-
-
-
-
-<div class="modal-buttons">
-
-
-<button id="closeDiary">
-
-取消
-
-</button>
-
-
-
-<button id="saveDiary">
-
-保存
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- =================
-历史日期详情
-================= -->
-
-
-<div class="modal hidden" id="historyModal">
-
-
-<div class="modal-box">
-
-
-<h2 id="historyTitle">
-
-2026.07.27
-
-</h2>
-
-
-
-<div id="historyContent">
-
-
-</div>
-
-
-
-<div class="modal-buttons">
-
-
-<button id="closeHistory">
-
-关闭
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
 
 
 
@@ -1302,6 +385,5 @@ placeholder="记录今天发生的小事...">
 
 
 </body>
-
 
 </html>
