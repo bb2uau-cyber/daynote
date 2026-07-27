@@ -1,0 +1,863 @@
+:root{
+
+    --bg:#FBF5ED;
+    --card:#FFFFFF;
+
+    --primary:#D4B28C;
+    --primary-dark:#B48A62;
+
+    --success:#A9B89A;
+
+    --text:#333333;
+    --sub:#8C8C8C;
+
+    --border:#EFEAE3;
+
+}
+
+
+
+/* ===== 基础 ===== */
+
+
+*{
+    box-sizing:border-box;
+}
+
+
+body{
+
+    margin:0;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    font-family:
+
+    "PingFang SC",
+    "Microsoft YaHei",
+    "Noto Sans SC",
+    sans-serif;
+
+
+}
+
+
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    font-family:inherit;
+
+}
+
+
+
+.app{
+
+    width:100%;
+
+    max-width:900px;
+
+    margin:auto;
+
+    padding:30px 24px 60px;
+
+}
+
+
+
+
+
+/* ===== 顶部 ===== */
+
+
+.top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.top h1{
+
+    margin:0;
+
+    font-size:30px;
+
+    font-weight:600;
+
+    letter-spacing:-1px;
+
+}
+
+
+
+.top p{
+
+    margin-top:8px;
+
+    color:var(--sub);
+
+}
+
+
+
+
+
+.mood{
+
+    background:var(--card);
+
+    padding:12px 20px;
+
+    border-radius:30px;
+
+    box-shadow:
+
+    0 8px 25px rgba(0,0,0,.05);
+
+    display:flex;
+
+    gap:8px;
+
+    align-items:center;
+
+}
+
+
+
+
+
+
+/* ===== 卡片 ===== */
+
+
+.card{
+
+    background:var(--card);
+
+    border-radius:26px;
+
+    padding:24px;
+
+    margin-bottom:18px;
+
+
+    box-shadow:
+
+    0 12px 35px rgba(0,0,0,.04);
+
+
+    transition:.3s;
+
+}
+
+
+
+.card:hover{
+
+    transform:translateY(-2px);
+
+}
+
+
+
+
+
+
+
+.section-title{
+
+    font-size:18px;
+
+    font-weight:600;
+
+    margin-bottom:18px;
+
+}
+
+
+
+.section-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+
+
+
+
+/* ===== 按钮 ===== */
+
+
+#addTaskBtn,
+
+#addRoutineBtn,
+
+#addIdeaBtn{
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+}
+
+
+
+
+
+.add-small{
+
+    background:#f7f3ee;
+
+    color:var(--sub);
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:18px;
+
+}
+
+
+
+
+
+
+/* ===== 进度 ===== */
+
+
+.progress-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:var(--sub);
+
+    margin-bottom:12px;
+
+}
+
+
+
+
+.progress-bar{
+
+    height:12px;
+
+    background:#eee;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+
+
+#progressLine{
+
+    height:100%;
+
+    width:0;
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+    transition:.5s;
+
+}
+
+
+
+
+
+
+
+
+/* ===== 任务 ===== */
+
+
+.task-item{
+
+
+    padding:16px 0;
+
+    border-bottom:
+
+    1px solid var(--border);
+
+
+    animation:fade .3s;
+
+
+}
+
+
+
+.task-item:last-child{
+
+    border-bottom:none;
+
+}
+
+
+
+.task-main{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+}
+
+
+
+.checkbox{
+
+    width:22px;
+
+    height:22px;
+
+    border-radius:50%;
+
+    border:2px solid var(--primary);
+
+    flex-shrink:0;
+
+}
+
+
+
+.checkbox.done{
+
+    background:var(--success);
+
+    border-color:var(--success);
+
+}
+
+
+
+.task-title{
+
+    font-size:15px;
+
+}
+
+
+
+.task-done{
+
+    text-decoration:line-through;
+
+    color:#aaa;
+
+}
+
+
+
+.task-meta{
+
+    margin-top:8px;
+
+    font-size:12px;
+
+    color:var(--sub);
+
+}
+
+
+
+.note{
+
+    background:#faf8f5;
+
+    padding:12px;
+
+    margin-top:12px;
+
+    border-radius:15px;
+
+    font-size:13px;
+
+    color:#666;
+
+}
+
+
+
+
+
+/* ===== 统计 ===== */
+
+
+.statistics{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    text-align:center;
+
+}
+
+
+
+.statistics p{
+
+    margin:0 0 10px;
+
+    color:var(--sub);
+
+    font-size:13px;
+
+}
+
+
+
+.statistics strong{
+
+    font-size:25px;
+
+}
+
+
+
+
+
+
+
+/* ===== 主题 ===== */
+
+
+.theme-box{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+}
+
+
+
+.theme-box button{
+
+
+    background:#f5f5f5;
+
+    padding:12px 16px;
+
+    border-radius:20px;
+
+    font-size:14px;
+
+
+}
+
+
+
+
+
+
+/* ===== 弹窗 ===== */
+
+
+.modal{
+
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+
+    rgba(0,0,0,.25);
+
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:100;
+
+
+}
+
+
+
+
+.hidden{
+
+    display:none;
+
+}
+
+
+
+.modal-content{
+
+
+    width:90%;
+
+    max-width:420px;
+
+
+    background:white;
+
+
+    border-radius:30px;
+
+    padding:28px;
+
+
+    animation:pop .25s;
+
+
+}
+
+
+
+
+
+.modal-content h2{
+
+    margin-top:0;
+
+}
+
+
+
+
+.modal-content label{
+
+
+    display:block;
+
+    font-size:13px;
+
+    color:var(--sub);
+
+    margin:
+
+    15px 0 8px;
+
+
+}
+
+
+
+
+
+.modal-content input,
+
+.modal-content textarea,
+
+.modal-content select{
+
+
+    width:100%;
+
+
+    border:none;
+
+    background:#f7f5f2;
+
+    border-radius:15px;
+
+    padding:14px;
+
+
+    outline:none;
+
+    font-size:14px;
+
+
+}
+
+
+
+
+
+.modal-content textarea{
+
+    height:100px;
+
+    resize:none;
+
+}
+
+
+
+
+
+.time-row{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+
+
+.time-row div{
+
+    flex:1;
+
+}
+
+
+
+
+
+.modal-buttons{
+
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:20px;
+
+}
+
+
+
+.modal-buttons button{
+
+    flex:1;
+
+    padding:14px;
+
+    border-radius:18px;
+
+
+}
+
+
+
+#cancelTask,
+
+#cancelRoutine{
+
+    background:#eee;
+
+}
+
+
+
+#saveTask,
+
+#saveRoutine{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+
+
+
+
+/* ===== 动画 ===== */
+
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+
+
+@keyframes pop{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.9);
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+
+
+
+
+
+
+
+/* ===== 五套主题 ===== */
+
+
+
+body.mint{
+
+
+    --bg:#F1F8F5;
+
+    --primary:#91C9B0;
+
+    --primary-dark:#6FAF92;
+
+
+}
+
+
+
+body.pink{
+
+
+    --bg:#FFF3F6;
+
+    --primary:#E8A7B8;
+
+    --primary-dark:#D98298;
+
+
+}
+
+
+
+body.purple{
+
+
+    --bg:#F6F2FA;
+
+    --primary:#B7A4D8;
+
+    --primary-dark:#9278C0;
+
+
+}
+
+
+
+body.blue{
+
+
+    --bg:#F1F7FC;
+
+    --primary:#8BB9DD;
+
+    --primary-dark:#6298C4;
+
+
+}
+
+
+
+body.cream{
+
+
+    --bg:#FBF5ED;
+
+    --primary:#D4B28C;
+
+    --primary-dark:#B48A62;
+
+
+}
+
+
+
+
+
+
+
+
+/* 手机适配 */
+
+
+@media(max-width:600px){
+
+
+.app{
+
+    padding:20px 15px;
+
+}
+
+
+
+.top h1{
+
+    font-size:25px;
+
+}
+
+
+
+.card{
+
+    padding:20px;
+
+    border-radius:22px;
+
+}
+
+
+
+.statistics strong{
+
+    font-size:21px;
+
+}
+
+
+}

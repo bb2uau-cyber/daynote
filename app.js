@@ -1,0 +1,1193 @@
+/* ==========================
+ Daynote V2.0
+ Personal Work OS
+========================== */
+
+
+
+// ===== 数据 =====
+
+
+let tasks = JSON.parse(
+    localStorage.getItem("tasks")
+) || [];
+
+
+let routines = JSON.parse(
+    localStorage.getItem("routines")
+) || [
+
+    {
+        name:"查看店铺数据",
+        done:false
+    },
+
+    {
+        name:"回复工作消息",
+        done:false
+    },
+
+    {
+        name:"整理今日素材",
+        done:false
+    }
+
+];
+
+
+
+let ideas = JSON.parse(
+    localStorage.getItem("ideas")
+) || [];
+
+
+
+
+
+
+// ===== 初始化 =====
+
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+
+    loadTheme();
+
+    showDate();
+
+    renderTasks();
+
+    renderRoutines();
+
+    renderIdeas();
+
+    updateStatistics();
+
+
+    bindEvents();
+
+
+});
+
+
+
+
+
+
+// ===== 日期 =====
+
+
+function showDate(){
+
+    let date =
+    new Date();
+
+
+    document
+    .getElementById("todayDate")
+    .innerText =
+    date.toLocaleDateString(
+        "zh-CN",
+        {
+            year:"numeric",
+            month:"2-digit",
+            day:"2-digit",
+            weekday:"long"
+        }
+    );
+
+}
+
+
+
+
+
+
+
+
+// ==========================
+// 任务系统
+// ==========================
+
+
+
+
+function bindEvents(){
+
+
+
+// 打开任务弹窗
+
+document
+.getElementById("addTaskBtn")
+.onclick =
+()=>{
+
+    openModal(
+        "taskModal"
+    );
+
+};
+
+
+
+
+// 保存任务
+
+document
+.getElementById("saveTask")
+.onclick =
+saveTask;
+
+
+
+
+// 关闭
+
+document
+.getElementById("cancelTask")
+.onclick =
+()=>{
+
+closeModal(
+"taskModal"
+);
+
+};
+
+
+
+
+
+// 习惯
+
+
+document
+.getElementById("addRoutineBtn")
+.onclick =
+()=>{
+
+openModal(
+"routineModal"
+);
+
+};
+
+
+
+
+document
+.getElementById("saveRoutine")
+.onclick =
+saveRoutine;
+
+
+
+document
+.getElementById("cancelRoutine")
+.onclick =
+()=>{
+
+closeModal(
+"routineModal"
+);
+
+};
+
+
+
+
+
+
+// 灵感
+
+document
+.getElementById("addIdeaBtn")
+.onclick =
+addIdea;
+
+
+
+
+// 主题
+
+document
+.querySelectorAll(
+".theme-box button"
+)
+.forEach(btn=>{
+
+
+btn.onclick =
+()=>{
+
+
+changeTheme(
+btn.dataset.theme
+);
+
+
+};
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+function saveTask(){
+
+
+
+let name =
+document
+.getElementById("taskName")
+.value.trim();
+
+
+
+if(!name)
+return;
+
+
+
+let task={
+
+
+id:
+Date.now(),
+
+
+name:name,
+
+
+project:
+document
+.getElementById("taskProject")
+.value,
+
+
+category:
+document
+.getElementById("taskCategory")
+.value,
+
+
+start:
+document
+.getElementById("startTime")
+.value,
+
+
+end:
+document
+.getElementById("endTime")
+.value,
+
+
+repeat:
+document
+.getElementById("repeatTask")
+.value,
+
+
+note:
+document
+.getElementById("taskNote")
+.value,
+
+
+created:
+new Date()
+.toLocaleString(),
+
+
+finished:null,
+
+
+done:false
+
+
+};
+
+
+
+tasks.unshift(task);
+
+
+
+saveData();
+
+
+
+renderTasks();
+
+
+
+closeModal(
+"taskModal"
+);
+
+
+
+clearTaskForm();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+// 渲染任务
+
+
+function renderTasks(){
+
+
+let box =
+document
+.getElementById("taskList");
+
+
+box.innerHTML="";
+
+
+
+if(tasks.length===0){
+
+
+box.innerHTML=
+
+`
+<div class="empty">
+
+今天还没有任务 ✨
+
+</div>
+`;
+
+return;
+
+
+}
+
+
+
+tasks.forEach(task=>{
+
+
+let item =
+document
+.createElement("div");
+
+
+
+item.className =
+"task-item";
+
+
+
+
+item.innerHTML =
+
+
+`
+
+<div class="task-main">
+
+
+<div 
+class="checkbox ${task.done?"done":""}"
+onclick="toggleTask(${task.id})">
+</div>
+
+
+
+<div>
+
+
+<div class="
+${task.done?
+'task-title task-done':
+'task-title'}
+">
+
+${task.name}
+
+</div>
+
+
+
+<div class="task-meta">
+
+
+${task.category || ""}
+
+&nbsp;
+
+${task.project || ""}
+
+
+
+<br>
+
+
+⏰
+
+${task.start || "--"}
+
+-
+
+${task.end || "--"}
+
+
+
+<br>
+
+
+创建：
+
+${task.created}
+
+
+${
+task.finished?
+
+"<br>完成："+task.finished
+
+:""
+
+}
+
+
+
+${
+task.repeat!="none"?
+
+"<br>🔁 "+repeatText(task.repeat)
+
+:""
+
+}
+
+
+</div>
+
+
+
+
+${
+task.note?
+
+`
+<div class="note">
+
+📝 ${task.note}
+
+</div>
+`
+
+:""
+
+}
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+<div>
+
+
+<button
+
+onclick="deleteTask(${task.id})"
+
+style="
+background:none;
+color:#aaa;
+">
+
+删除
+
+</button>
+
+
+</div>
+
+
+
+`;
+
+
+
+box.appendChild(item);
+
+
+
+});
+
+
+
+updateStatistics();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+// 完成 / 取消完成
+
+
+function toggleTask(id){
+
+
+let task =
+tasks.find(
+t=>t.id===id
+);
+
+
+
+if(!task)
+return;
+
+
+
+task.done =
+!task.done;
+
+
+
+if(task.done){
+
+
+task.finished =
+new Date()
+.toLocaleTimeString();
+
+
+
+}
+
+else{
+
+
+task.finished=null;
+
+
+}
+
+
+
+saveData();
+
+
+renderTasks();
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function deleteTask(id){
+
+
+tasks =
+tasks.filter(
+t=>t.id!==id
+);
+
+
+
+saveData();
+
+
+renderTasks();
+
+
+}
+
+
+
+
+
+
+
+
+function repeatText(type){
+
+
+let map={
+
+daily:"每天",
+
+workday:"工作日",
+
+weekly:"每周",
+
+monthly:"每月"
+
+
+};
+
+
+return map[type] || "";
+
+}
+
+
+
+
+
+
+
+
+// ==========================
+// 每日习惯
+// ==========================
+
+
+
+function renderRoutines(){
+
+
+let box =
+document
+.getElementById("routineList");
+
+
+
+box.innerHTML="";
+
+
+
+routines.forEach(
+(r,i)=>{
+
+
+box.innerHTML +=
+
+
+`
+
+<div class="task-item">
+
+
+<div class="task-main">
+
+
+<div
+
+class="
+checkbox ${r.done?"done":""}
+"
+
+onclick="
+toggleRoutine(${i})
+">
+
+</div>
+
+
+
+<div>
+
+${r.name}
+
+
+</div>
+
+
+</div>
+
+
+<button
+
+onclick="
+deleteRoutine(${i})
+"
+
+style="
+background:none;
+color:#aaa;
+">
+
+删除
+
+</button>
+
+
+
+</div>
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+function saveRoutine(){
+
+
+
+let name =
+document
+.getElementById("routineName")
+.value.trim();
+
+
+
+if(!name)
+return;
+
+
+
+routines.push({
+
+name:name,
+
+done:false
+
+});
+
+
+
+saveData();
+
+
+renderRoutines();
+
+
+closeModal(
+"routineModal"
+);
+
+
+document
+.getElementById("routineName")
+.value="";
+
+
+}
+
+
+
+
+
+
+
+function toggleRoutine(i){
+
+
+routines[i].done =
+!routines[i].done;
+
+
+saveData();
+
+
+renderRoutines();
+
+
+
+}
+
+
+
+
+function deleteRoutine(i){
+
+
+routines.splice(
+i,1
+);
+
+
+saveData();
+
+
+renderRoutines();
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================
+// 灵感
+// ==========================
+
+
+function addIdea(){
+
+
+let text =
+prompt(
+"记录一个灵感："
+);
+
+
+
+if(!text)
+return;
+
+
+
+ideas.unshift({
+
+text:text,
+
+time:
+new Date()
+.toLocaleString()
+
+
+});
+
+
+
+saveData();
+
+
+renderIdeas();
+
+
+
+}
+
+
+
+
+
+function renderIdeas(){
+
+
+let box =
+document
+.getElementById("ideaList");
+
+
+
+box.innerHTML="";
+
+
+
+ideas.forEach(
+idea=>{
+
+
+box.innerHTML +=
+
+
+`
+
+<div class="note">
+
+
+💡 ${idea.text}
+
+<br>
+
+<small>
+
+${idea.time}
+
+</small>
+
+
+</div>
+
+`;
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================
+// 统计
+// ==========================
+
+
+
+function updateStatistics(){
+
+
+let done =
+tasks.filter(
+t=>t.done
+).length;
+
+
+
+document
+.getElementById("todayDone")
+.innerText =
+done;
+
+
+
+document
+.getElementById("totalDone")
+.innerText =
+
+localStorage.getItem(
+"totalDone"
+) || done;
+
+
+
+let total =
+tasks.length;
+
+
+
+let rate =
+total?
+
+Math.round(
+done/total*100
+)
+
+:0;
+
+
+
+document
+.getElementById("completeCount")
+.innerText =
+
+`${done}/${total}`;
+
+
+
+document
+.getElementById("completeRate")
+.innerText =
+
+rate+"%";
+
+
+
+document
+.getElementById("progressLine")
+.style.width =
+
+rate+"%";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================
+// 主题
+// ==========================
+
+
+
+function changeTheme(name){
+
+
+document.body.className =
+name;
+
+
+
+localStorage.setItem(
+"theme",
+name
+);
+
+
+}
+
+
+
+function loadTheme(){
+
+
+let theme =
+localStorage.getItem(
+"theme"
+);
+
+
+
+if(theme){
+
+document.body.className =
+theme;
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ==========================
+// 工具
+// ==========================
+
+
+function saveData(){
+
+
+localStorage.setItem(
+"tasks",
+JSON.stringify(tasks)
+);
+
+
+
+localStorage.setItem(
+"routines",
+JSON.stringify(routines)
+);
+
+
+
+localStorage.setItem(
+"ideas",
+JSON.stringify(ideas)
+);
+
+
+
+}
+
+
+
+
+function openModal(id){
+
+
+document
+.getElementById(id)
+.classList
+.remove("hidden");
+
+
+}
+
+
+
+
+function closeModal(id){
+
+
+document
+.getElementById(id)
+.classList
+.add("hidden");
+
+
+}
+
+
+
+
+function clearTaskForm(){
+
+
+[
+"taskName",
+"taskProject",
+"startTime",
+"endTime",
+"taskNote"
+
+]
+
+.forEach(id=>{
+
+
+document
+.getElementById(id)
+.value="";
+
+
+});
+
+
+}
