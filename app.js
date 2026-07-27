@@ -1,12 +1,13 @@
 /* ==========================
-Daynote V3.1
-Personal Work OS
+ Daynote V3.2
+ Personal Work OS
+ Stable Version
 ========================== */
 
 
-// ==========================
-// 数据
-// ==========================
+/* ==========================
+ 数据
+========================== */
 
 
 let tasks =
@@ -81,12 +82,9 @@ localStorage.getItem("focus")
 
 
 
-
-
-
-// ==========================
-// 初始化
-// ==========================
+/* ==========================
+ 初始化
+========================== */
 
 
 document.addEventListener(
@@ -129,18 +127,15 @@ bindEvents();
 
 
 
-
-
-
-// ==========================
-// 日期
-// ==========================
+/* ==========================
+ 日期
+========================== */
 
 
 function initDate(){
 
 
-let d =
+let date =
 new Date();
 
 
@@ -149,7 +144,7 @@ document
 .innerText =
 
 
-d.toLocaleDateString(
+date.toLocaleDateString(
 "zh-CN",
 {
 
@@ -176,16 +171,17 @@ weekday:"long"
 
 
 
-// ==========================
-// 事件绑定
-// ==========================
+/* ==========================
+ 事件绑定
+========================== */
 
 
 function bindEvents(){
 
 
 
-// 新任务
+// 今日待办
+
 
 document
 .getElementById("addTaskBtn")
@@ -194,14 +190,10 @@ document
 
 
 
-
-// 保存任务
-
 document
 .getElementById("saveTask")
 .onclick =
 saveTask;
-
 
 
 
@@ -214,7 +206,9 @@ document
 
 
 
-// 习惯
+
+// 每日习惯
+
 
 document
 .getElementById("addRoutineBtn")
@@ -239,7 +233,9 @@ document
 
 
 
+
 // 分类
+
 
 document
 .getElementById("addCategoryBtn")
@@ -265,7 +261,9 @@ document
 
 
 
+
 // 灵感
+
 
 document
 .getElementById("addIdeaBtn")
@@ -294,10 +292,27 @@ document
 
 // 今日重点
 
+
 document
 .getElementById("addFocusBtn")
 .onclick =
-addFocus;
+()=>openModal("focusModal");
+
+
+
+document
+.getElementById("saveFocus")
+.onclick =
+saveFocus;
+
+
+
+document
+.getElementById("closeFocus")
+.onclick =
+()=>closeModal("focusModal");
+
+
 
 
 
@@ -309,14 +324,15 @@ addFocus;
 
 document
 .querySelectorAll(".theme-grid button")
-.forEach(btn=>{
+.forEach(button=>{
 
 
-btn.onclick =
+button.onclick =
 ()=>{
 
+
 changeTheme(
-btn.dataset.theme
+button.dataset.theme
 );
 
 
@@ -337,12 +353,14 @@ btn.dataset.theme
 
 
 
-// ==========================
-// 任务
-// ==========================
+/* ==========================
+ 任务系统
+========================== */
+
 
 
 function saveTask(){
+
 
 
 let name =
@@ -361,10 +379,13 @@ return;
 let task={
 
 
-id:Date.now(),
+id:
+Date.now(),
+
 
 
 name:name,
+
 
 
 project:
@@ -430,26 +451,41 @@ new Date()
 
 
 
+finished:"",
+
+
+
 done:false,
 
 
 
-finished:""
+open:false
+
 
 };
+
+
 
 
 
 tasks.unshift(task);
 
 
+
 saveData();
+
 
 
 renderTasks();
 
 
+
 closeModal("taskModal");
+
+
+
+clearTaskForm();
+
 
 
 }
@@ -457,8 +493,12 @@ closeModal("taskModal");
 
 
 
-function renderTasks(){
 
+
+
+
+
+function renderTasks(){
 
 
 let box =
@@ -474,16 +514,17 @@ box.innerHTML="";
 tasks.forEach(task=>{
 
 
-let div =
+let item =
 document
 .createElement("div");
 
 
-div.className="task-item";
+
+item.className="task-item";
 
 
 
-div.innerHTML=
+item.innerHTML =
 
 
 `
@@ -495,7 +536,7 @@ div.innerHTML=
 
 
 
-<div>
+<div class="task-content">
 
 
 <div class="task-title ${task.done?"task-done":""}">
@@ -508,44 +549,72 @@ ${task.name}
 
 <div class="task-meta">
 
-${task.category}
-
+${task.category || "未分类"}
 
 <br>
 
 📌 ${task.project || "无项目"}
 
+</div>
+
+
+
+
+<div class="task-detail ${task.open?"show":""}">
+
+
+创建：
+
+${task.created}
+
+
 
 <br>
 
-⏰ ${task.start || "--"}
+
+⏰
+
+${task.start || "--"}
 
 -
 
 ${task.end || "--"}
 
 
+
 <br>
 
-${task.finished ? 
-"完成："+task.finished:""}
+
+🔁
+
+${repeatText(task.repeat)}
+
+
+
+<br>
+
+
+${task.finished?
+
+"完成："+task.finished:""
+}
+
+
+
+<br>
+
+
+
+📝
+
+${task.note || "无备注"}
+
+
 
 </div>
 
 
 
-${task.note ?
-
-`
-<div class="note">
-
-📝 ${task.note}
-
-</div>
-`
-:""}
-
-
 </div>
 
 
@@ -554,7 +623,7 @@ ${task.note ?
 
 
 
-<button class="delete-btn">
+<button class="delete-task">
 
 删除
 
@@ -567,21 +636,28 @@ ${task.note ?
 
 
 
-div
+item
 .querySelector(".checkbox")
 .onclick =
 ()=>toggleTask(task.id);
 
 
 
-div
-.querySelector(".delete-btn")
+item
+.querySelector(".task-content")
+.onclick =
+()=>toggleDetail(task.id);
+
+
+
+item
+.querySelector(".delete-task")
 .onclick =
 ()=>deleteTask(task.id);
 
 
 
-box.appendChild(div);
+box.appendChild(item);
 
 
 
@@ -592,9 +668,39 @@ box.appendChild(div);
 updateStatistics();
 
 
+}
+
+
+
+
+
+
+
+
+function toggleDetail(id){
+
+
+let task =
+tasks.find(
+t=>t.id===id
+);
+
+
+
+if(task){
+
+
+task.open =
+!task.open;
+
+
+renderTasks();
+
 
 }
 
+
+}
 
 
 
@@ -606,8 +712,13 @@ function toggleTask(id){
 
 let task =
 tasks.find(
-x=>x.id===id
+t=>t.id===id
 );
+
+
+
+if(!task)
+return;
 
 
 
@@ -616,25 +727,34 @@ task.done =
 
 
 
+if(task.done){
+
+
 task.finished =
-
-task.done?
-
 new Date()
-.toLocaleTimeString():
+.toLocaleString();
 
-"";
+
+}
+
+else{
+
+
+task.finished="";
+
+
+}
 
 
 
 saveData();
 
 
+
 renderTasks();
 
 
 }
-
 
 
 
@@ -646,8 +766,9 @@ function deleteTask(id){
 
 tasks =
 tasks.filter(
-x=>x.id!==id
+t=>t.id!==id
 );
+
 
 
 saveData();
@@ -663,27 +784,93 @@ renderTasks();
 
 
 
+function repeatText(type){
+
+
+let map={
+
+
+none:"不循环",
+
+daily:"每天",
+
+workday:"工作日",
+
+weekly:"每周",
+
+monthly:"每月"
+
+
+};
+
+
+return map[type] || "";
+
+}
 
 
 
-// ==========================
-// 分类
-// ==========================
 
+
+
+
+
+function clearTaskForm(){
+
+
+[
+
+"taskName",
+
+"taskProject",
+
+"taskStart",
+
+"taskEnd",
+
+"taskNote"
+
+]
+
+.forEach(id=>{
+
+
+let el =
+document.getElementById(id);
+
+
+
+if(el)
+
+el.value="";
+
+
+});
+
+
+}
+/* ==========================
+ 分类系统
+========================== */
 
 
 function renderCategories(){
 
 
-
 let select =
-document
-.getElementById("taskCategory");
+document.getElementById("taskCategory");
 
 
 
-select.innerHTML=
-"<option>选择分类</option>";
+if(select){
+
+
+select.innerHTML =
+`
+<option>
+选择分类
+</option>
+`;
 
 
 
@@ -691,7 +878,6 @@ categories.forEach(c=>{
 
 
 select.innerHTML +=
-
 
 `
 
@@ -707,10 +893,17 @@ ${c.icon} ${c.name}
 });
 
 
+}
+
+
 
 let box =
-document
-.getElementById("categoryList");
+document.getElementById("categoryList");
+
+
+
+if(!box)
+return;
 
 
 
@@ -718,7 +911,7 @@ box.innerHTML="";
 
 
 
-categories.forEach((c,i)=>{
+categories.forEach((c,index)=>{
 
 
 box.innerHTML +=
@@ -728,22 +921,31 @@ box.innerHTML +=
 
 <div class="category-tag">
 
-${c.icon} ${c.name}
+
+${c.icon}
+
+${c.name}
 
 
-<button class="remove-category"
-data-id="${i}">
+<button 
+class="remove-category"
+data-index="${index}"
+>
+
 ×
+
 </button>
 
 
 </div>
+
 
 `;
 
 
 
 });
+
 
 
 
@@ -757,9 +959,10 @@ btn.onclick=()=>{
 
 
 categories.splice(
-btn.dataset.id,
+btn.dataset.index,
 1
 );
+
 
 
 saveData();
@@ -774,8 +977,10 @@ renderCategories();
 });
 
 
-
 }
+
+
+
 
 
 
@@ -808,11 +1013,13 @@ return;
 
 categories.push({
 
-icon:icon || "📌",
+icon:
+icon || "📌",
 
 name:name
 
 });
+
 
 
 saveData();
@@ -821,7 +1028,19 @@ saveData();
 renderCategories();
 
 
-closeModal("categoryModal");
+closeModal(
+"categoryModal"
+);
+
+
+
+document
+.getElementById("categoryIcon")
+.value="";
+
+document
+.getElementById("categoryName")
+.value="";
 
 
 }
@@ -834,10 +1053,9 @@ closeModal("categoryModal");
 
 
 
-// ==========================
-// 每日习惯
-// ==========================
-
+/* ==========================
+ 每日习惯
+========================== */
 
 
 function renderRoutines(){
@@ -849,11 +1067,16 @@ document
 
 
 
+if(!box)
+return;
+
+
+
 box.innerHTML="";
 
 
 
-routines.forEach((r,i)=>{
+routines.forEach((routine,index)=>{
 
 
 box.innerHTML +=
@@ -864,20 +1087,38 @@ box.innerHTML +=
 <div class="task-item">
 
 
+<div class="task-main">
+
+
+<div 
+class="checkbox ${routine.done?"done":""}"
+data-index="${index}"
+>
+
+</div>
+
+
+
 <div>
 
-${r.done?"✅":"⭕"}
+${routine.name}
 
-${r.name}
+</div>
 
 
 </div>
 
 
-<button class="delete-routine"
-data-id="${i}">
+
+<button
+class="delete-routine"
+data-index="${index}"
+>
+
 删除
+
 </button>
+
 
 
 </div>
@@ -885,7 +1126,51 @@ data-id="${i}">
 `;
 
 
+
 });
+
+
+
+
+
+
+document
+.querySelectorAll(".checkbox")
+.forEach(box=>{
+
+
+box.onclick=()=>{
+
+
+let index =
+box.dataset.index;
+
+
+
+if(index!==undefined){
+
+
+routines[index].done =
+!routines[index].done;
+
+
+
+saveData();
+
+
+renderRoutines();
+
+
+}
+
+
+};
+
+
+});
+
+
+
 
 
 
@@ -898,9 +1183,10 @@ btn.onclick=()=>{
 
 
 routines.splice(
-btn.dataset.id,
+btn.dataset.index,
 1
 );
+
 
 
 saveData();
@@ -923,7 +1209,9 @@ renderRoutines();
 
 
 
+
 function saveRoutine(){
+
 
 
 let name =
@@ -948,13 +1236,22 @@ done:false
 });
 
 
+
 saveData();
 
 
 renderRoutines();
 
 
-closeModal("routineModal");
+closeModal(
+"routineModal"
+);
+
+
+
+document
+.getElementById("routineName")
+.value="";
 
 
 }
@@ -967,9 +1264,152 @@ closeModal("routineModal");
 
 
 
-// ==========================
-// 灵感
-// ==========================
+/* ==========================
+ 今日重点
+========================== */
+
+
+function saveFocus(){
+
+
+let text =
+document
+.getElementById("focusText")
+.value
+.trim();
+
+
+
+if(!text)
+return;
+
+
+
+focus.push(text);
+
+
+
+saveData();
+
+
+renderFocus();
+
+
+document
+.getElementById("focusText")
+.value="";
+
+
+
+closeModal(
+"focusModal"
+);
+
+
+}
+
+
+
+
+
+
+function renderFocus(){
+
+
+let box =
+document
+.getElementById("focusList");
+
+
+
+if(!box)
+return;
+
+
+
+box.innerHTML="";
+
+
+
+focus.forEach((item,index)=>{
+
+
+box.innerHTML +=
+
+
+`
+
+<div class="note focus-item">
+
+
+⭐ ${item}
+
+
+
+<button
+class="delete-focus"
+data-index="${index}"
+>
+
+删除
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+
+document
+.querySelectorAll(".delete-focus")
+.forEach(btn=>{
+
+
+btn.onclick=()=>{
+
+
+focus.splice(
+btn.dataset.index,
+1
+);
+
+
+
+saveData();
+
+
+renderFocus();
+
+
+};
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* ==========================
+ 灵感收集
+========================== */
 
 
 function saveIdea(){
@@ -996,6 +1436,7 @@ time:
 new Date()
 .toLocaleString()
 
+
 });
 
 
@@ -1006,10 +1447,20 @@ saveData();
 renderIdeas();
 
 
-closeModal("ideaModal");
+closeModal(
+"ideaModal"
+);
+
+
+
+document
+.getElementById("ideaText")
+.value="";
 
 
 }
+
+
 
 
 
@@ -1018,16 +1469,23 @@ closeModal("ideaModal");
 function renderIdeas(){
 
 
+
 let box =
 document
 .getElementById("ideaList");
 
 
+
+if(!box)
+return;
+
+
+
 box.innerHTML="";
 
 
 
-ideas.forEach(i=>{
+ideas.forEach((idea,index)=>{
 
 
 box.innerHTML +=
@@ -1037,99 +1495,73 @@ box.innerHTML +=
 
 <div class="note">
 
-💡 ${i.text}
+
+💡 ${idea.text}
+
+
 
 <br>
 
-${i.time}
+
+<small>
+
+${idea.time}
+
+</small>
+
+
+
+<button
+class="delete-idea"
+data-index="${index}"
+>
+
+删除
+
+</button>
+
+
 
 </div>
 
+
 `;
+
 
 
 });
 
 
-}
 
 
+document
+.querySelectorAll(".delete-idea")
+.forEach(btn=>{
 
 
+btn.onclick=()=>{
 
 
-
-
-
-// ==========================
-// 今日重点
-// ==========================
-
-
-
-function addFocus(){
-
-
-let text =
-prompt(
-"今日重点"
+ideas.splice(
+btn.dataset.index,
+1
 );
 
-
-
-if(!text)
-return;
-
-
-
-focus.push(text);
 
 
 saveData();
 
 
-renderFocus();
+renderIdeas();
 
 
-}
-
-
-
-
-
-function renderFocus(){
-
-
-let box =
-document
-.getElementById("focusList");
-
-
-box.innerHTML="";
-
-
-
-focus.forEach(f=>{
-
-
-box.innerHTML +=
-
-
-`
-
-<div class="note">
-
-⭐ ${f}
-
-</div>
-
-`;
-
+};
 
 
 });
 
 
+
 }
 
 
@@ -1140,19 +1572,85 @@ box.innerHTML +=
 
 
 
-// ==========================
-// 统计
-// ==========================
-
+/* ==========================
+ 数据统计
+========================== */
 
 
 function updateStatistics(){
 
 
 let done =
+
 tasks.filter(
-t=>t.done
-).length;
+task=>task.done
+)
+.length;
+
+
+
+let total =
+tasks.length;
+
+
+
+let percent =
+
+total?
+
+Math.round(
+done / total *100
+):
+
+0;
+
+
+
+let progressText =
+document
+.getElementById("progressText");
+
+
+
+if(progressText)
+
+progressText.innerText =
+
+`${done} / ${total}`;
+
+
+
+
+let progressPercent =
+document
+.getElementById("progressPercent");
+
+
+
+if(progressPercent)
+
+progressPercent.innerText =
+
+percent+"%";
+
+
+
+
+let progressInner =
+document
+.getElementById("progressInner");
+
+
+
+if(progressInner)
+
+progressInner.style.width =
+
+percent+"%";
+
+
+
+
 
 
 document
@@ -1163,53 +1661,19 @@ done;
 
 
 document
-.getElementById("allDone")
-.innerText =
-localStorage.getItem("allDone")
-||
-done;
-
-
-
-document
 .getElementById("taskNumber")
 .innerText =
-tasks.length;
-
-
-
-let percent =
-tasks.length?
-
-Math.round(
-done/tasks.length*100
-):
-
-0;
+total;
 
 
 
 document
-.getElementById("progressText")
+.getElementById("allDone")
 .innerText =
 
-`${done}/${tasks.length}`;
+localStorage.getItem("allDone")
+|| done;
 
-
-
-document
-.getElementById("progressPercent")
-.innerText =
-
-percent+"%";
-
-
-
-document
-.getElementById("progressInner")
-.style.width =
-
-percent+"%";
 
 
 }
@@ -1222,15 +1686,15 @@ percent+"%";
 
 
 
-// ==========================
-// 主题
-// ==========================
+/* ==========================
+ 主题系统
+========================== */
 
 
 function changeTheme(theme){
 
 
-document.body.className=
+document.body.className =
 theme;
 
 
@@ -1242,7 +1706,55 @@ theme
 
 
 
+let names={
+
+
+mint:"Mint Cloud",
+
+sakura:"Sakura Milk",
+
+lavender:"Lavender Mist",
+
+blue:"Baby Blue",
+
+vanilla:"Vanilla Cream",
+
+aqua:"Aqua Glass",
+
+peach:"Peach Soda",
+
+moon:"Moon Purple",
+
+ice:"Ice Blue",
+
+lilac:"Lilac Pink",
+
+pearl:"Pearl White",
+
+teddy:"Teddy Beige"
+
+
+};
+
+
+
+let title =
+document
+.getElementById("themeName");
+
+
+
+if(title)
+
+title.innerText =
+names[theme];
+
+
 }
+
+
+
+
 
 
 
@@ -1256,10 +1768,13 @@ localStorage.getItem(
 
 
 
-if(theme)
+if(theme){
 
-document.body.className=
+document.body.className =
 theme;
+
+
+}
 
 
 
@@ -1272,17 +1787,24 @@ theme;
 
 
 
-// ==========================
-// 工具
-// ==========================
+
+/* ==========================
+ 工具
+========================== */
 
 
 function openModal(id){
 
 
+let modal =
 document
-.getElementById(id)
-.classList
+.getElementById(id);
+
+
+
+if(modal)
+
+modal.classList
 .remove("hidden");
 
 
@@ -1290,16 +1812,26 @@ document
 
 
 
+
+
+
 function closeModal(id){
 
 
+let modal =
 document
-.getElementById(id)
-.classList
+.getElementById(id);
+
+
+
+if(modal)
+
+modal.classList
 .add("hidden");
 
 
 }
+
 
 
 
@@ -1314,10 +1846,12 @@ JSON.stringify(tasks)
 );
 
 
+
 localStorage.setItem(
 "categories",
 JSON.stringify(categories)
 );
+
 
 
 localStorage.setItem(
@@ -1326,10 +1860,12 @@ JSON.stringify(routines)
 );
 
 
+
 localStorage.setItem(
 "ideas",
 JSON.stringify(ideas)
 );
+
 
 
 localStorage.setItem(
@@ -1338,4 +1874,11 @@ JSON.stringify(focus)
 );
 
 
+
 }
+
+
+
+// ==========================
+// End
+// ==========================
