@@ -4,11 +4,16 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Daynote · Personal Work OS</title>
+<title>
+Daynote · Personal Work OS
+</title>
+
 
 <link rel="stylesheet" href="style.css">
+
 
 </head>
 
@@ -23,28 +28,33 @@
 
 <header class="top">
 
+
 <div>
 
 <h1>
 ☁ Good Morning
 </h1>
 
+
 <p id="todayDate">
 2026.07.27 Monday
 </p>
 
+
 </div>
+
 
 
 <div class="mood">
 
-<span>
-🌱
+<span id="moodIcon">
+🍃
 </span>
 
-<span>
-Calm
+<span id="moodText">
+Mint Cloud
 </span>
+
 
 </div>
 
@@ -55,9 +65,12 @@ Calm
 
 
 
-<!-- 今日完成度 -->
 
-<section class="card progress-card">
+
+<!-- 完成度 -->
+
+
+<section class="card">
 
 
 <div class="section-title">
@@ -68,6 +81,7 @@ Calm
 
 
 <div class="progress-info">
+
 
 <span id="completeCount">
 0 / 0
@@ -82,14 +96,21 @@ Calm
 </div>
 
 
+
 <div class="progress-bar">
 
-<div id="progressLine"></div>
+
+<div id="progressLine">
 
 </div>
 
 
+</div>
+
+
+
 </section>
+
 
 
 
@@ -99,7 +120,11 @@ Calm
 
 <!-- 今日重点 -->
 
+
 <section class="card">
+
+
+<div class="section-header">
 
 
 <div class="section-title">
@@ -109,14 +134,19 @@ Calm
 </div>
 
 
-<div id="focusList">
 
+<button onclick="addFocus()">
 
-<button class="add-small">
-
-＋ 添加今日重点
+＋ 添加
 
 </button>
+
+
+</div>
+
+
+
+<div id="focusList">
 
 
 </div>
@@ -130,12 +160,16 @@ Calm
 
 
 
+
+
 <!-- 今日待办 -->
+
 
 <section class="card">
 
 
 <div class="section-header">
+
 
 <div class="section-title">
 
@@ -144,7 +178,8 @@ Calm
 </div>
 
 
-<button id="addTaskBtn">
+
+<button onclick="openTaskModal()">
 
 ＋ 新任务
 
@@ -158,11 +193,7 @@ Calm
 <div id="taskList">
 
 
-<!-- JS生成任务 -->
-
-
 </div>
-
 
 
 </section>
@@ -174,7 +205,9 @@ Calm
 
 
 
+
 <!-- 每日习惯 -->
+
 
 <section class="card">
 
@@ -189,9 +222,10 @@ Calm
 </div>
 
 
-<button id="addRoutineBtn">
 
-＋ 添加习惯
+<button onclick="openRoutineModal()">
+
+＋ 添加
 
 </button>
 
@@ -202,9 +236,7 @@ Calm
 
 <div id="routineList">
 
-
 </div>
-
 
 
 </section>
@@ -216,7 +248,9 @@ Calm
 
 
 
-<!-- 灵感收集 -->
+
+<!-- 灵感 -->
+
 
 <section class="card">
 
@@ -231,7 +265,8 @@ Calm
 </div>
 
 
-<button id="addIdeaBtn">
+
+<button onclick="addIdea()">
 
 ＋ 新想法
 
@@ -239,6 +274,7 @@ Calm
 
 
 </div>
+
 
 
 <div id="ideaList">
@@ -256,14 +292,16 @@ Calm
 
 
 
-<!-- 完成统计 -->
+
+<!-- 工作统计 -->
+
 
 <section class="card">
 
 
 <div class="section-title">
 
-📈 完成任务总览
+📈 工作复盘
 
 </div>
 
@@ -281,6 +319,7 @@ Calm
 <strong id="todayDone">
 0
 </strong>
+
 
 </div>
 
@@ -301,19 +340,64 @@ Calm
 
 
 
+
 <div>
 
 <p>
-专注时间
+任务数量
 </p>
 
-<strong id="focusTime">
-0h
+
+<strong id="taskTotal">
+0
 </strong>
 
 
 </div>
 
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- 分类管理 -->
+
+
+<section class="card">
+
+
+<div class="section-header">
+
+
+<div class="section-title">
+
+🏷 分类管理
+
+</div>
+
+
+<button onclick="openCategoryModal()">
+
+＋ 新分类
+
+</button>
+
+
+</div>
+
+
+
+<div id="categoryList">
 
 
 </div>
@@ -332,6 +416,7 @@ Calm
 
 <!-- 主题 -->
 
+
 <section class="card">
 
 
@@ -343,37 +428,96 @@ Calm
 
 
 
-<div class="theme-box">
+<div class="theme-grid">
 
 
-<button data-theme="mint">
-🍃 薄荷绿
+
+<button onclick="changeTheme('mint')">
+
+🍃 Mint Cloud
+
 </button>
 
 
-<button data-theme="pink">
-🌸 樱花粉
+<button onclick="changeTheme('sakura')">
+
+🌸 Sakura Milk
+
 </button>
 
 
-<button data-theme="purple">
-💜 薰衣草紫
+<button onclick="changeTheme('lavender')">
+
+💜 Lavender Mist
+
 </button>
 
 
-<button data-theme="blue">
-☁ 天空蓝
+<button onclick="changeTheme('babyblue')">
+
+☁ Baby Blue
+
 </button>
 
 
-<button data-theme="cream">
-🍰 奶油拿铁
+<button onclick="changeTheme('vanilla')">
+
+🧁 Vanilla Cream
+
+</button>
+
+
+<button onclick="changeTheme('aqua')">
+
+🫧 Aqua Glass
+
+</button>
+
+
+<button onclick="changeTheme('peach')">
+
+🍑 Peach Soda
+
+</button>
+
+
+<button onclick="changeTheme('moon')">
+
+🌙 Moon Purple
+
+</button>
+
+
+<button onclick="changeTheme('ice')">
+
+🩵 Ice Blue
+
+</button>
+
+
+<button onclick="changeTheme('lilac')">
+
+🪻 Lilac Pink
+
+</button>
+
+
+<button onclick="changeTheme('pearl')">
+
+🐚 Pearl White
+
+</button>
+
+
+<button onclick="changeTheme('teddy')">
+
+🧸 Teddy Beige
+
 </button>
 
 
 
 </div>
-
 
 
 </section>
@@ -382,10 +526,6 @@ Calm
 
 
 
-
-
-
-
 </div>
 
 
@@ -396,13 +536,15 @@ Calm
 
 
 
-<!-- 新建任务弹窗 -->
+<!-- ==================
+任务弹窗
+================== -->
 
 
 <div class="modal hidden" id="taskModal">
 
 
-<div class="modal-content">
+<div class="modal-box">
 
 
 <h2>
@@ -417,17 +559,22 @@ Calm
 
 
 <input id="taskName"
-placeholder="例如：优化详情页">
+placeholder="例如：优化吸盘挂钩详情页">
+
 
 
 
 
 <label>
-项目</label>
+项目
+</label>
 
 
 <input id="taskProject"
 placeholder="例如：bydoll">
+
+
+
 
 
 <label>
@@ -435,23 +582,40 @@ placeholder="例如：bydoll">
 </label>
 
 
-<div class="category-box">
-
 <select id="taskCategory">
-
-<option value="">
-选择分类
-</option>
 
 </select>
 
 
-<button type="button" id="manageCategoryBtn">
-＋ 管理分类
-</button>
 
 
-</div>
+
+<label>
+优先级
+</label>
+
+
+<select id="taskPriority">
+
+
+<option>
+⭐ 高
+</option>
+
+
+<option>
+普通
+</option>
+
+
+<option>
+低
+</option>
+
+
+</select>
+
+
 
 
 
@@ -465,7 +629,10 @@ placeholder="例如：bydoll">
 开始时间
 </label>
 
-<input type="time" id="startTime">
+
+<input 
+type="time"
+id="startTime">
 
 </div>
 
@@ -473,11 +640,16 @@ placeholder="例如：bydoll">
 
 <div>
 
+
 <label>
 截止时间
 </label>
 
-<input type="time" id="endTime">
+
+<input
+type="time"
+id="endTime">
+
 
 </div>
 
@@ -491,30 +663,32 @@ placeholder="例如：bydoll">
 
 
 <label>
-
 循环任务
-
 </label>
 
 
-<select id="repeatTask">
+<select id="taskRepeat">
 
 
 <option value="none">
 不循环
 </option>
 
+
 <option value="daily">
 每天
 </option>
+
 
 <option value="workday">
 工作日
 </option>
 
+
 <option value="weekly">
 每周
 </option>
+
 
 <option value="monthly">
 每月
@@ -530,18 +704,15 @@ placeholder="例如：bydoll">
 
 
 <label>
-
 备注
-
 </label>
 
 
-<textarea id="taskNote"
-
-placeholder="添加任务备注...">
+<textarea 
+id="taskNote"
+placeholder="记录任务细节...">
 
 </textarea>
-
 
 
 
@@ -550,14 +721,15 @@ placeholder="添加任务备注...">
 <div class="modal-buttons">
 
 
-<button id="cancelTask">
+<button onclick="closeModal('taskModal')">
 
 取消
 
 </button>
 
 
-<button id="saveTask">
+
+<button onclick="saveTask()">
 
 保存
 
@@ -582,13 +754,15 @@ placeholder="添加任务备注...">
 
 
 
-<!-- 习惯弹窗 -->
+<!-- ==================
+习惯弹窗
+================== -->
 
 
 <div class="modal hidden" id="routineModal">
 
 
-<div class="modal-content">
+<div class="modal-box">
 
 
 <h2>
@@ -596,25 +770,29 @@ placeholder="添加任务备注...">
 </h2>
 
 
-<input id="routineName"
-
+<input
+id="routineName"
 placeholder="例如：英语学习30分钟">
 
 
 
 <select id="routineRepeat">
 
+
 <option>
 每天
 </option>
+
 
 <option>
 工作日
 </option>
 
+
 <option>
 每周
 </option>
+
 
 
 </select>
@@ -623,14 +801,16 @@ placeholder="例如：英语学习30分钟">
 
 <div class="modal-buttons">
 
-<button id="cancelRoutine">
+
+<button onclick="closeModal('routineModal')">
 
 取消
 
 </button>
 
 
-<button id="saveRoutine">
+
+<button onclick="saveRoutine()">
 
 保存
 
@@ -644,6 +824,68 @@ placeholder="例如：英语学习30分钟">
 
 
 </div>
+
+
+
+
+
+
+
+
+
+<!-- ==================
+分类弹窗
+================== -->
+
+
+<div class="modal hidden" id="categoryModal">
+
+
+<div class="modal-box">
+
+
+<h2>
+创建分类
+</h2>
+
+
+
+<input
+id="categoryIcon"
+placeholder="输入图标，例如 🎨">
+
+
+<input
+id="categoryName"
+placeholder="分类名称">
+
+
+
+<div class="modal-buttons">
+
+
+<button onclick="closeModal('categoryModal')">
+
+取消
+
+</button>
+
+
+<button onclick="saveCategory()">
+
+保存
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
 
 
 
