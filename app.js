@@ -1,104 +1,64 @@
-/* ==========================
-Daynote V4
-Life Planner
-========================== */
+/* =========================
+ Daynote V4.2
+ App Logic
+========================= */
 
 
-// ==========================
+
+// =====================
 // 数据
-// ==========================
+// =====================
 
 
 let tasks =
 JSON.parse(
 localStorage.getItem("tasks")
-) || [];
+)
+||
+[];
 
 
 
 let focus =
 JSON.parse(
 localStorage.getItem("focus")
-) || [];
-
-
-
-let routines =
-JSON.parse(
-localStorage.getItem("routines")
-) || [
-
-{
-name:"查看店铺数据",
-done:false
-},
-
-{
-name:"整理今日素材",
-done:false
-}
-
-];
+)
+||
+[];
 
 
 
 let ideas =
 JSON.parse(
 localStorage.getItem("ideas")
-) || [];
+)
+||
+[];
 
 
 
 let diary =
-JSON.parse(
 localStorage.getItem("diary")
-) || {};
+||
+"";
 
 
 
-let moods =
+let projects =
 JSON.parse(
-localStorage.getItem("moods")
-) || {};
+localStorage.getItem("projects")
+)
+||
+[];
 
 
 
-let categories =
-JSON.parse(
-localStorage.getItem("categories")
-) || [
-
-{
-icon:"🎨",
-name:"视觉设计"
-},
-
-{
-icon:"📦",
-name:"产品开发"
-},
-
-{
-icon:"💡",
-name:"AI灵感"
-}
-
-];
 
 
-
-let currentDate =
-new Date();
-
-
-
-let currentMonth =
-currentDate.getMonth();
-
-
-
-let currentYear =
-currentDate.getFullYear();
+let week =
+localStorage.getItem("week")
+||
+"";
 
 
 
@@ -106,20 +66,15 @@ currentDate.getFullYear();
 
 
 
-// ==========================
+// =====================
 // 初始化
-// ==========================
+// =====================
 
 
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
+window.onload=function(){
 
 
 showGreeting();
-
-
-renderCalendar();
 
 
 renderTasks();
@@ -128,28 +83,22 @@ renderTasks();
 renderFocus();
 
 
-renderRoutines();
-
-
 renderIdeas();
 
 
 renderDiary();
 
 
-renderCategories();
+renderProjects();
 
 
-updateStatistics();
+renderWeek();
 
 
 loadTheme();
 
 
-bindEvents();
-
-
-});
+};
 
 
 
@@ -159,9 +108,9 @@ bindEvents();
 
 
 
-// ==========================
-// 时间问候
-// ==========================
+// =====================
+// 时间
+// =====================
 
 
 function showGreeting(){
@@ -174,97 +123,55 @@ new Date()
 
 
 let title =
-"";
+document
+.getElementById("greeting");
 
 
-let text =
-"";
 
-
-let icon =
-"";
+let sub =
+document
+.getElementById("subtitle");
 
 
 
 if(hour>=5 && hour<12){
 
 
-title="Good Morning";
+title.innerHTML="☀️ Good Morning";
 
-text="今天也慢慢开始吧";
 
-icon="☀️";
+sub.innerHTML="今天也慢慢开始吧";
 
 
 }
-
 
 else if(hour>=12 && hour<18){
 
 
-title="Good Afternoon";
-
-text="保持一点专注";
-
-icon="🌤";
+title.innerHTML="🌤 Good Afternoon";
 
 
-}
-
-
-else if(hour>=18 && hour<=23){
-
-
-title="Good Evening";
-
-text="今天辛苦啦";
-
-icon="🌙";
+sub.innerHTML="保持一点专注";
 
 
 }
-
 
 else{
 
 
-title="Late Night";
+title.innerHTML="🌙 Good Evening";
 
-text="写下此刻的小心事";
 
-icon="🌌";
+sub.innerHTML="今天辛苦啦";
 
 
 }
 
 
 
-
-
 document
-.getElementById("greeting")
-.innerText =
-title;
-
-
-
-document
-.getElementById("greetingText")
-.innerText =
-text;
-
-
-
-document
-.getElementById("greetingIcon")
-.innerText =
-icon;
-
-
-
-document
-.getElementById("todayDate")
-.innerText =
+.getElementById("date")
+.innerHTML=
 
 
 new Date()
@@ -285,7 +192,6 @@ weekday:"long"
 );
 
 
-
 }
 
 
@@ -296,568 +202,26 @@ weekday:"long"
 
 
 
-// ==========================
-// 事件
-// ==========================
+// =====================
+// 心情
+// =====================
 
 
-function bindEvents(){
-
-
-
-//任务
+function setMood(value){
 
 
 document
-.getElementById("addTaskBtn")
-.onclick =
-()=>openModal("taskModal");
+.getElementById("moodText")
+.innerHTML=
 
-
-
-document
-.getElementById("saveTask")
-.onclick =
-saveTask;
-
-
-
-document
-.getElementById("closeTask")
-.onclick =
-()=>closeModal("taskModal");
-
-
-
-
-
-
-
-//重点
-
-
-document
-.getElementById("addFocusBtn")
-.onclick =
-()=>openModal("focusModal");
-
-
-
-document
-.getElementById("saveFocus")
-.onclick =
-saveFocus;
-
-
-
-document
-.getElementById("closeFocus")
-.onclick =
-()=>closeModal("focusModal");
-
-
-
-
-
-
-
-//习惯
-
-
-document
-.getElementById("addRoutineBtn")
-.onclick =
-()=>openModal("routineModal");
-
-
-
-document
-.getElementById("saveRoutine")
-.onclick =
-saveRoutine;
-
-
-
-document
-.getElementById("closeRoutine")
-.onclick =
-()=>closeModal("routineModal");
-
-
-
-
-
-
-
-//灵感
-
-
-document
-.getElementById("addIdeaBtn")
-.onclick =
-()=>openModal("ideaModal");
-
-
-
-document
-.getElementById("saveIdea")
-.onclick =
-saveIdea;
-
-
-
-document
-.getElementById("closeIdea")
-.onclick =
-()=>closeModal("ideaModal");
-
-
-
-
-
-
-
-//日记
-
-
-document
-.getElementById("addDiaryBtn")
-.onclick =
-()=>openModal("diaryModal");
-
-
-
-document
-.getElementById("saveDiary")
-.onclick =
-saveDiary;
-
-
-
-document
-.getElementById("closeDiary")
-.onclick =
-()=>closeModal("diaryModal");
-
-
-
-
-
-
-
-
-//主题
-
-
-document
-.querySelectorAll(".theme-grid button")
-.forEach(btn=>{
-
-
-btn.onclick=()=>{
-
-
-changeTheme(
-btn.dataset.theme
-);
-
-
-};
-
-
-});
-
-
-
-
-
-
-
-//月份
-
-
-document
-.getElementById("prevMonth")
-.onclick=()=>{
-
-
-currentMonth--;
-
-
-if(currentMonth<0){
-
-currentMonth=11;
-
-currentYear--;
-
-}
-
-
-renderCalendar();
-
-
-};
-
-
-
-document
-.getElementById("nextMonth")
-.onclick=()=>{
-
-
-currentMonth++;
-
-
-if(currentMonth>11){
-
-currentMonth=0;
-
-currentYear++;
-
-}
-
-
-renderCalendar();
-
-
-};
-
-
-}
-
-
-
-
-
-
-
-
-
-// ==========================
-// 日历
-// ==========================
-
-
-function renderCalendar(){
-
-
-let grid =
-document
-.getElementById("calendarGrid");
-
-
-
-grid.innerHTML="";
-
-
-
-let title =
-document
-.getElementById("calendarTitle");
-
-
-
-title.innerText =
-
-
-`${currentYear}年 ${currentMonth+1}月`;
-
-
-
-let firstDay =
-new Date(
-currentYear,
-currentMonth,
-1
-)
-.getDay();
-
-
-
-let days =
-new Date(
-currentYear,
-currentMonth+1,
-0
-)
-.getDate();
-
-
-
-for(let i=0;i<firstDay;i++){
-
-
-grid.innerHTML +=
-`
-<div></div>
-`;
-
-
-}
-
-
-
-
-
-for(let d=1;d<=days;d++){
-
-
-
-let key =
-
-`${currentYear}-${currentMonth+1}-${d}`;
-
-
-
-let hasData =
-
-diary[key] ||
-moods[key] ||
-tasks.some(
-t=>t.date===key
-);
-
-
-
-grid.innerHTML +=
-
-
-`
-
-<div class="calendar-day"
-data-date="${key}">
-
-
-${d}
-
-
-
-${hasData?
-
-`<span class="dot">🌱</span>`
-
-:""}
-
-
-
-</div>
-
-
-`;
-
-
-
-}
-
-
-
-
-document
-.querySelectorAll(".calendar-day")
-.forEach(day=>{
-
-
-day.onclick=()=>{
-
-
-showHistory(
-day.dataset.date
-);
-
-
-};
-
-
-});
-
-
-}
-/* ==========================
-历史日期查看
-========================== */
-
-
-function showHistory(date){
-
-
-let box =
-document
-.getElementById("historyContent");
-
-
-
-let title =
-document
-.getElementById("historyTitle");
-
-
-
-title.innerText =
-date;
-
-
-
-let dayTasks =
-tasks.filter(
-task=>task.date===date
-);
-
-
-
-box.innerHTML =
-
-
-`
-
-<h3>
-⭐ 今日重点
-</h3>
-
-<p>
-
-${focus.length?
-
-focus.join("<br>")
-
-:
-
-"暂无记录"}
-
-</p>
-
-
-<h3>
-☁ 完成任务
-</h3>
-
-<p>
-
-${dayTasks.length?
-
-dayTasks.map(
-t=>"✓ "+t.name
-)
-.join("<br>")
-
-:
-
-"暂无任务"}
-
-</p>
-
-
-
-<h3>
-🌱 心情
-</h3>
-
-
-<p>
-
-${moods[date] || "暂无记录"}
-
-</p>
-
-
-
-<h3>
-📖 今日记录
-</h3>
-
-
-<p>
-
-${diary[date] || "暂无记录"}
-
-</p>
-
-`;
-
-
-
-openModal(
-"historyModal"
-);
-
-
-}
-
-
-
-
-
-document
-.getElementById("closeHistory")
-.onclick =
-()=>closeModal("historyModal");
-
-
-
-
-
-
-
-
-
-/* ==========================
-今日心情
-========================== */
-
-
-document
-.querySelectorAll(".mood-list button")
-.forEach(btn=>{
-
-
-btn.onclick=()=>{
-
-
-let today =
-getTodayKey();
-
-
-
-moods[today] =
-btn.dataset.mood;
+"今天："+value;
 
 
 
 localStorage.setItem(
-"moods",
-JSON.stringify(moods)
+"mood",
+value
 );
-
-
-
-document
-.getElementById("todayMood")
-.innerText =
-btn.dataset.mood;
-
-
-
-};
-
-
-});
-
-
-
-
-
-
-
-
-
-function getTodayKey(){
-
-
-let d =
-new Date();
-
-
-
-return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 
 
 }
@@ -870,42 +234,136 @@ return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 
 
 
-/* ==========================
-今日重点
-========================== */
+// =====================
+// 弹窗
+// =====================
+
+
+function openModal(id){
+
+
+document
+.getElementById(id)
+.classList
+.remove("hidden");
+
+
+}
+
+
+
+function closeModal(id){
+
+
+document
+.getElementById(id)
+.classList
+.add("hidden");
+
+
+}
+
+
+
+function openFocus(){
+
+openModal(
+"focusModal"
+);
+
+}
+
+
+
+function openTask(){
+
+openModal(
+"taskModal"
+);
+
+}
+
+
+
+function openIdea(){
+
+openModal(
+"ideaModal"
+);
+
+}
+
+
+
+function openDiary(){
+
+openModal(
+"diaryModal"
+);
+
+}
+
+
+
+function openProject(){
+
+openModal(
+"projectModal"
+);
+
+}
+
+
+
+function openWeek(){
+
+openModal(
+"weekModal"
+);
+
+}
+
+
+
+
+
+
+
+
+
+// =====================
+// 今日重点
+// =====================
 
 
 function saveFocus(){
 
 
-let text =
+let value =
 document
-.getElementById("focusText")
+.getElementById("focusInput")
 .value
 .trim();
 
 
 
-if(!text)
+if(!value)
 return;
 
 
 
-focus.push(text);
+focus.push(value);
 
 
 
-saveData();
+localStorage.setItem(
+"focus",
+JSON.stringify(focus)
+);
 
 
 
 renderFocus();
-
-
-
-document
-.getElementById("focusText")
-.value="";
 
 
 
@@ -914,9 +372,7 @@ closeModal(
 );
 
 
-
 }
-
 
 
 
@@ -927,11 +383,6 @@ function renderFocus(){
 let box =
 document
 .getElementById("focusList");
-
-
-
-if(!box)
-return;
 
 
 
@@ -948,16 +399,13 @@ box.innerHTML +=
 
 `
 
-<div class="note">
+<div class="focus-item">
 
 
 ⭐ ${item}
 
 
-<button
-class="delete-focus"
-data-index="${index}"
->
+<button onclick="deleteFocus(${index})">
 
 ×
 
@@ -966,40 +414,36 @@ data-index="${index}"
 
 </div>
 
-`;
 
+`;
 
 
 });
 
 
-
-document
-.querySelectorAll(".delete-focus")
-.forEach(btn=>{
+}
 
 
-btn.onclick=()=>{
+
+
+
+function deleteFocus(index){
 
 
 focus.splice(
-btn.dataset.index,
+index,
 1
 );
 
 
-
-saveData();
+localStorage.setItem(
+"focus",
+JSON.stringify(focus)
+);
 
 
 
 renderFocus();
-
-
-};
-
-
-});
 
 
 }
@@ -1012,9 +456,9 @@ renderFocus();
 
 
 
-/* ==========================
-任务系统
-========================== */
+// =====================
+// Todo
+// =====================
 
 
 function saveTask(){
@@ -1022,9 +466,16 @@ function saveTask(){
 
 let name =
 document
-.getElementById("taskName")
+.getElementById("taskInput")
 .value
 .trim();
+
+
+
+let note =
+document
+.getElementById("taskNote")
+.value;
 
 
 
@@ -1033,90 +484,19 @@ return;
 
 
 
-let task={
-
-
-id:
-Date.now(),
-
+tasks.push({
 
 name:name,
 
+note:note,
 
-project:
-document
-.getElementById("taskProject")
-.value,
+done:false
 
-
-
-category:
-document
-.getElementById("taskCategory")
-.value,
+});
 
 
 
-priority:
-document
-.getElementById("taskPriority")
-.value,
-
-
-
-start:
-document
-.getElementById("taskStart")
-.value,
-
-
-
-end:
-document
-.getElementById("taskEnd")
-.value,
-
-
-
-repeat:
-document
-.getElementById("taskRepeat")
-.value,
-
-
-
-note:
-document
-.getElementById("taskNote")
-.value,
-
-
-
-created:
-new Date()
-.toLocaleString(),
-
-
-
-date:
-getTodayKey(),
-
-
-
-done:false,
-
-
-finished:""
-
-};
-
-
-
-tasks.unshift(task);
-
-
-
-saveData();
+saveTasks();
 
 
 
@@ -1135,6 +515,8 @@ closeModal(
 
 
 
+
+
 function renderTasks(){
 
 
@@ -1148,7 +530,8 @@ box.innerHTML="";
 
 
 
-tasks.forEach(task=>{
+tasks.forEach(
+(task,index)=>{
 
 
 box.innerHTML +=
@@ -1159,70 +542,21 @@ box.innerHTML +=
 <div class="task-item">
 
 
-<div class="task-main">
+<span onclick="finishTask(${index})"
+
+class="${task.done?"complete":""}">
 
 
-<div class="checkbox ${task.done?"done":""}"
-data-id="${task.id}">
-
-</div>
-
-
-<div>
-
-
-<div class="task-title ${task.done?"task-done":""}">
+${task.done?"✓":"□"}
 
 ${task.name}
 
-</div>
+
+</span>
 
 
 
-<div class="task-meta">
-
-${task.category}
-
-<br>
-
-${task.project || ""}
-
-
-</div>
-
-
-
-<div class="task-detail">
-
-
-创建：
-
-${task.created}
-
-<br>
-
-完成：
-
-${task.finished || "--"}
-
-<br>
-
-📝
-
-${task.note || "无"}
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-<button class="delete-task"
-data-id="${task.id}">
+<button onclick="deleteTask(${index})">
 
 删除
 
@@ -1238,85 +572,6 @@ data-id="${task.id}">
 });
 
 
-
-
-
-
-document
-.querySelectorAll(".checkbox")
-.forEach(btn=>{
-
-
-btn.onclick=()=>{
-
-
-let task =
-tasks.find(
-t=>t.id==btn.dataset.id
-);
-
-
-
-task.done =
-!task.done;
-
-
-
-task.finished =
-
-task.done?
-
-new Date()
-.toLocaleString()
-
-:
-
-"";
-
-
-
-saveData();
-
-
-renderTasks();
-
-
-};
-
-
-});
-
-
-
-
-
-document
-.querySelectorAll(".delete-task")
-.forEach(btn=>{
-
-
-btn.onclick=()=>{
-
-
-tasks =
-tasks.filter(
-t=>t.id!=btn.dataset.id
-);
-
-
-
-saveData();
-
-
-renderTasks();
-
-
-};
-
-
-});
-
-
 }
 
 
@@ -1325,49 +580,18 @@ renderTasks();
 
 
 
+function finishTask(index){
 
 
-/* ==========================
-每日习惯
-========================== */
-
-
-function saveRoutine(){
-
-
-let name =
-document
-.getElementById("routineName")
-.value
-.trim();
+tasks[index].done =
+!tasks[index].done;
 
 
 
-if(!name)
-return;
+saveTasks();
 
 
-
-routines.push({
-
-name:name,
-
-done:false
-
-});
-
-
-
-saveData();
-
-
-renderRoutines();
-
-
-
-closeModal(
-"routineModal"
-);
+renderTasks();
 
 
 }
@@ -1376,85 +600,37 @@ closeModal(
 
 
 
-function renderRoutines(){
+function deleteTask(index){
 
 
-let box =
-document
-.getElementById("routineList");
-
-
-
-box.innerHTML="";
-
-
-
-routines.forEach(
-(item,index)=>{
-
-
-box.innerHTML +=
-
-
-`
-
-<div class="task-item">
-
-
-<div>
-
-${item.done?"✓":"○"}
-
-${item.name}
-
-</div>
-
-
-<button
-class="delete-routine"
-data-index="${index}"
->
-
-删除
-
-</button>
-
-
-</div>
-
-`;
-
-
-
-});
-
-
-
-document
-.querySelectorAll(".delete-routine")
-.forEach(btn=>{
-
-
-btn.onclick=()=>{
-
-
-routines.splice(
-btn.dataset.index,
+tasks.splice(
+index,
 1
 );
 
 
-
-saveData();
-
-
-renderRoutines();
+saveTasks();
 
 
-};
+renderTasks();
 
 
-});
+}
+
+
+
+
+
+function saveTasks(){
+
+
+localStorage.setItem(
+
+"tasks",
+
+JSON.stringify(tasks)
+
+);
 
 
 }
@@ -1467,40 +643,38 @@ renderRoutines();
 
 
 
-/* ==========================
-灵感
-========================== */
+// =====================
+// 灵感
+// =====================
 
 
 function saveIdea(){
 
 
-let text =
+let value =
 document
-.getElementById("ideaText")
+.getElementById("ideaInput")
 .value
 .trim();
 
 
 
-if(!text)
+if(!value)
 return;
 
 
 
-ideas.unshift({
-
-text:text,
-
-time:
-new Date()
-.toLocaleString()
-
-});
+ideas.push(value);
 
 
 
-saveData();
+localStorage.setItem(
+
+"ideas",
+
+JSON.stringify(ideas)
+
+);
 
 
 
@@ -1518,9 +692,6 @@ closeModal(
 
 
 
-
-
-
 function renderIdeas(){
 
 
@@ -1534,7 +705,8 @@ box.innerHTML="";
 
 
 
-ideas.forEach(item=>{
+ideas.forEach(
+item=>{
 
 
 box.innerHTML +=
@@ -1542,17 +714,9 @@ box.innerHTML +=
 
 `
 
-<div class="note">
+<div class="idea-item">
 
-💡 ${item.text}
-
-<br>
-
-<small>
-
-${item.time}
-
-</small>
+💡 ${item}
 
 </div>
 
@@ -1573,37 +737,25 @@ ${item.time}
 
 
 
-/* ==========================
-今日记录
-========================== */
+// =====================
+// 今日记录
+// =====================
 
 
 function saveDiary(){
 
 
-let text =
+diary =
 document
-.getElementById("diaryText")
-.value
-.trim();
+.getElementById("diaryInput")
+.value;
 
 
 
-if(!text)
-return;
-
-
-
-let today =
-getTodayKey();
-
-
-
-diary[today]=text;
-
-
-
-saveData();
+localStorage.setItem(
+"diary",
+diary
+);
 
 
 
@@ -1621,6 +773,8 @@ closeModal(
 
 
 
+
+
 function renderDiary(){
 
 
@@ -1630,175 +784,24 @@ document
 
 
 
-if(!box)
-return;
-
-
-
-let today =
-getTodayKey();
-
+if(diary){
 
 
 box.innerHTML =
 
 
-
-diary[today]?
-
 `
 
-<div class="note">
+<div class="idea-item">
 
-📷
-
-${diary[today]}
-
-</div>
-
-`
-
-:
-
-"";
-
-
-
-}
-
-/* ==========================
-分类系统
-========================== */
-
-
-function renderCategories(){
-
-
-let select =
-document.getElementById(
-"taskCategory"
-);
-
-
-
-if(select){
-
-
-select.innerHTML =
-`
-<option>
-选择分类
-</option>
-`;
-
-
-
-categories.forEach(item=>{
-
-
-select.innerHTML +=
-
-
-`
-
-<option>
-
-${item.icon}
-${item.name}
-
-</option>
-
-`;
-
-
-
-});
-
-
-}
-
-
-
-let box =
-document.getElementById(
-"categoryList"
-);
-
-
-
-if(!box)
-return;
-
-
-
-box.innerHTML="";
-
-
-
-categories.forEach(
-(item,index)=>{
-
-
-box.innerHTML +=
-
-
-`
-
-<div class="note">
-
-
-${item.icon}
-
-${item.name}
-
-
-
-<button
-class="delete-category"
-data-index="${index}"
->
-
-×
-
-</button>
-
+📖 ${diary}
 
 </div>
 
 `;
 
 
-});
-
-
-
-
-document
-.querySelectorAll(".delete-category")
-.forEach(btn=>{
-
-
-btn.onclick=()=>{
-
-
-categories.splice(
-btn.dataset.index,
-1
-);
-
-
-
-saveData();
-
-
-
-renderCategories();
-
-
-};
-
-
-});
+}
 
 
 }
@@ -1809,26 +812,28 @@ renderCategories();
 
 
 
-function saveCategory(){
 
 
-let icon =
-document
-.getElementById(
-"categoryIcon"
-)
-.value
-.trim();
+// =====================
+// 项目看板
+// =====================
 
+
+function saveProject(){
 
 
 let name =
 document
-.getElementById(
-"categoryName"
-)
+.getElementById("projectName")
 .value
 .trim();
+
+
+
+let status =
+document
+.getElementById("projectStatus")
+.value;
 
 
 
@@ -1837,29 +842,110 @@ return;
 
 
 
-categories.push({
+projects.push({
 
-icon:
-icon || "📌",
+name:name,
 
-name:name
+status:status
 
 });
 
 
 
-saveData();
+localStorage.setItem(
+
+"projects",
+
+JSON.stringify(projects)
+
+);
 
 
 
-renderCategories();
+renderProjects();
 
 
 
 closeModal(
-"categoryModal"
+"projectModal"
 );
 
+
+}
+
+
+
+
+function renderProjects(){
+
+
+let ideaBox =
+document
+.getElementById("ideaBoard");
+
+
+let doingBox =
+document
+.getElementById("doingBoard");
+
+
+let doneBox =
+document
+.getElementById("doneBoard");
+
+
+
+if(!ideaBox)
+return;
+
+
+
+ideaBox.innerHTML="";
+
+doingBox.innerHTML="";
+
+doneBox.innerHTML="";
+
+
+
+
+projects.forEach(
+item=>{
+
+
+let html=
+
+`
+
+<div class="project-card">
+
+${item.name}
+
+</div>
+
+`;
+
+
+
+if(item.status==="idea")
+
+ideaBox.innerHTML+=html;
+
+
+
+if(item.status==="doing")
+
+doingBox.innerHTML+=html;
+
+
+
+if(item.status==="done")
+
+doneBox.innerHTML+=html;
+
+
+
+});
 
 
 }
@@ -1872,134 +958,68 @@ closeModal(
 
 
 
-/* ==========================
-统计
-========================== */
+// =====================
+// 周计划
+// =====================
 
 
-function updateStatistics(){
+function saveWeek(){
 
 
-let done =
-tasks.filter(
-item=>item.done
-)
-.length;
-
-
-
-let total =
-tasks.length;
-
-
-
-let percent =
-
-
-total ?
-
-Math.round(
-done / total * 100
-)
-
-:
-
-0;
-
-
-
-let progress =
+week =
 document
-.getElementById(
-"progressInner"
+.getElementById("weekInput")
+.value;
+
+
+
+localStorage.setItem(
+"week",
+week
 );
 
 
 
-if(progress)
-
-progress.style.width =
-percent+"%";
+renderWeek();
 
 
 
-let text =
-document
-.getElementById(
-"progressText"
+closeModal(
+"weekModal"
 );
 
 
-
-if(text)
-
-text.innerText =
-`${done}/${total}`;
+}
 
 
 
-let percentText =
+
+function renderWeek(){
+
+
+let box =
 document
-.getElementById(
-"progressPercent"
-);
+.querySelector(".week-grid");
 
 
 
-if(percentText)
-
-percentText.innerText =
-percent+"%";
+if(week && box){
 
 
-
-let todayDone =
-document
-.getElementById(
-"todayDone"
-);
+box.innerHTML +=
 
 
+`
 
-if(todayDone)
+<div class="idea-item">
 
-todayDone.innerText =
-done;
+${week}
 
+</div>
 
+`;
 
-let taskNumber =
-document
-.getElementById(
-"taskNumber"
-);
-
-
-
-if(taskNumber)
-
-taskNumber.innerText =
-total;
-
-
-
-let all =
-document
-.getElementById(
-"allDone"
-);
-
-
-
-if(all)
-
-all.innerText =
-localStorage.getItem(
-"allDone"
-)
-||
-done;
-
+}
 
 
 }
@@ -2012,15 +1032,15 @@ done;
 
 
 
-/* ==========================
-主题系统
-========================== */
+// =====================
+// 主题
+// =====================
 
 
 function changeTheme(theme){
 
 
-document.body.className =
+document.body.className=
 theme;
 
 
@@ -2031,80 +1051,7 @@ theme
 );
 
 
-
-let nameMap={
-
-
-mint:
-"Mint Diary",
-
-
-sakura:
-"Sakura Letter",
-
-
-lavender:
-"Lavender Night",
-
-
-blue:
-"Cloud Blue",
-
-
-vanilla:
-"Vanilla Cream",
-
-
-aqua:
-"Aqua Glass",
-
-
-peach:
-"Peach Soda",
-
-
-moon:
-"Moon Purple",
-
-
-ice:
-"Ice Blue",
-
-
-lilac:
-"Lilac Pink",
-
-
-pearl:
-"Pearl White",
-
-
-teddy:
-"Teddy Cafe"
-
-
-};
-
-
-
-let title =
-document
-.getElementById(
-"themeName"
-);
-
-
-
-if(title)
-
-title.innerText =
-nameMap[theme];
-
-
 }
-
-
-
 
 
 
@@ -2121,142 +1068,8 @@ localStorage.getItem(
 
 if(theme)
 
-document.body.className =
+document.body.className=
 theme;
 
 
 }
-
-
-
-
-
-
-
-
-
-/* ==========================
-弹窗
-========================== */
-
-
-function openModal(id){
-
-
-let modal =
-document
-.getElementById(id);
-
-
-
-if(modal)
-
-modal.classList.remove(
-"hidden"
-);
-
-
-}
-
-
-
-
-
-
-function closeModal(id){
-
-
-let modal =
-document
-.getElementById(id);
-
-
-
-if(modal)
-
-modal.classList.add(
-"hidden"
-);
-
-
-}
-
-
-
-
-
-
-
-
-
-/* ==========================
-保存数据
-========================== */
-
-
-function saveData(){
-
-
-
-localStorage.setItem(
-"tasks",
-JSON.stringify(tasks)
-);
-
-
-
-localStorage.setItem(
-"focus",
-JSON.stringify(focus)
-);
-
-
-
-localStorage.setItem(
-"routines",
-JSON.stringify(routines)
-);
-
-
-
-localStorage.setItem(
-"ideas",
-JSON.stringify(ideas)
-);
-
-
-
-localStorage.setItem(
-"diary",
-JSON.stringify(diary)
-);
-
-
-
-localStorage.setItem(
-"moods",
-JSON.stringify(moods)
-);
-
-
-
-localStorage.setItem(
-"categories",
-JSON.stringify(categories)
-);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-/* ==========================
-End Daynote V4
-========================== */
