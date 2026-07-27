@@ -1,10 +1,11 @@
 /* ==========================
-Daynote V3.1
+Daynote V3.3
 Korean Digital Journal UI
 ========================== */
 
 
 :root{
+
 
 --bg:#EDF8F4;
 
@@ -14,13 +15,15 @@ Korean Digital Journal UI
 
 --success:#9CCDB5;
 
---text:#4A4745;
+--text:#494643;
 
---sub:#99938D;
+--sub:#9B9590;
 
 --line:#EEE8E2;
 
+
 }
+
 
 
 
@@ -34,19 +37,25 @@ box-sizing:border-box;
 
 body{
 
+
 margin:0;
+
 
 min-height:100vh;
 
+
 background:var(--bg);
 
+
 color:var(--text);
+
 
 font-family:
 
 "PingFang SC",
 "Microsoft YaHei",
 sans-serif;
+
 
 
 transition:.4s;
@@ -62,14 +71,18 @@ transition:.4s;
 
 max-width:900px;
 
+
 margin:auto;
+
 
 padding:
 
-30px 22px 80px;
+35px 22px 80px;
 
 
 }
+
+
 
 
 
@@ -84,7 +97,9 @@ padding:
 
 display:flex;
 
+
 justify-content:space-between;
+
 
 align-items:center;
 
@@ -101,7 +116,9 @@ margin-bottom:25px;
 
 font-size:32px;
 
+
 margin:0;
+
 
 font-weight:600;
 
@@ -115,6 +132,7 @@ font-weight:600;
 
 color:var(--sub);
 
+
 }
 
 
@@ -123,6 +141,7 @@ color:var(--sub);
 
 
 background:var(--card);
+
 
 padding:
 
@@ -143,6 +162,11 @@ box-shadow:
 
 
 
+
+
+
+
+
 /* 卡片 */
 
 
@@ -155,7 +179,7 @@ background:var(--card);
 backdrop-filter:blur(20px);
 
 
-border-radius:28px;
+border-radius:30px;
 
 
 padding:25px;
@@ -164,14 +188,18 @@ padding:25px;
 margin-bottom:18px;
 
 
-
 box-shadow:
 
 0 15px 40px rgba(0,0,0,.05);
 
 
+border:
+
+1px solid rgba(255,255,255,.5);
+
 
 }
+
 
 
 
@@ -181,10 +209,15 @@ h2{
 
 font-size:18px;
 
+
 margin:0;
 
 
 }
+
+
+
+
 
 
 
@@ -194,9 +227,12 @@ margin:0;
 
 display:flex;
 
+
 justify-content:space-between;
 
+
 align-items:center;
+
 
 margin-bottom:15px;
 
@@ -214,12 +250,18 @@ button{
 
 border:none;
 
+
 cursor:pointer;
+
 
 font-family:inherit;
 
 
 }
+
+
+
+
 
 
 
@@ -267,7 +309,7 @@ transform:translateY(-2px);
 
 
 
-/* 完成进度 */
+/* 完成度 */
 
 
 .progress-info{
@@ -275,7 +317,9 @@ transform:translateY(-2px);
 
 display:flex;
 
+
 justify-content:space-between;
+
 
 color:var(--sub);
 
@@ -289,11 +333,15 @@ color:var(--sub);
 
 height:12px;
 
+
 background:#eee;
+
 
 border-radius:20px;
 
+
 overflow:hidden;
+
 
 margin-top:12px;
 
@@ -336,6 +384,7 @@ transition:.5s;
 
 
 
+
 /* 任务 */
 
 
@@ -344,12 +393,21 @@ transition:.5s;
 
 padding:
 
-15px 0;
+16px 0;
 
 
 border-bottom:
 
 1px solid var(--line);
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
+align-items:flex-start;
 
 
 }
@@ -361,7 +419,21 @@ border-bottom:
 
 display:flex;
 
+
 gap:14px;
+
+
+flex:1;
+
+
+}
+
+
+
+.task-content{
+
+
+cursor:pointer;
 
 
 }
@@ -372,6 +444,7 @@ gap:14px;
 
 
 width:22px;
+
 
 height:22px;
 
@@ -387,6 +460,9 @@ border:
 flex:none;
 
 
+cursor:pointer;
+
+
 }
 
 
@@ -395,6 +471,7 @@ flex:none;
 
 
 background:var(--success);
+
 
 border-color:var(--success);
 
@@ -418,6 +495,7 @@ font-size:15px;
 
 text-decoration:line-through;
 
+
 color:#aaa;
 
 
@@ -430,7 +508,9 @@ color:#aaa;
 
 font-size:12px;
 
+
 color:var(--sub);
+
 
 line-height:1.8;
 
@@ -442,27 +522,115 @@ margin-top:8px;
 
 
 
-.note{
+.task-detail{
 
 
-margin-top:10px;
+display:none;
 
 
-padding:13px;
+margin-top:12px;
+
+
+padding:15px;
+
+
+background:
+
+rgba(255,255,255,.55);
 
 
 border-radius:18px;
 
 
-background:
+font-size:13px;
 
-rgba(255,255,255,.6);
+
+line-height:1.8;
+
+
+}
+
+
+
+.task-detail.show{
+
+
+display:block;
+
+
+}
+
+
+
+
+
+
+
+
+
+.delete-task,
+
+.delete-routine,
+
+.delete-focus,
+
+.delete-idea,
+
+
+.remove-category{
+
+
+background:none;
+
+
+color:#aaa;
 
 
 font-size:13px;
 
 
+padding:5px;
+
+
 }
+
+
+
+
+
+
+
+
+
+/* 备注 */
+
+
+.note{
+
+
+background:
+
+rgba(255,255,255,.65);
+
+
+padding:14px;
+
+
+border-radius:18px;
+
+
+margin-top:10px;
+
+
+font-size:14px;
+
+
+line-height:1.6;
+
+
+}
+
+
 
 
 
@@ -478,6 +646,7 @@ font-size:13px;
 
 display:flex;
 
+
 justify-content:space-around;
 
 
@@ -492,6 +661,7 @@ text-align:center;
 
 
 color:var(--sub);
+
 
 font-size:13px;
 
@@ -515,6 +685,7 @@ font-size:26px;
 
 
 
+
 /* 分类 */
 
 
@@ -525,9 +696,6 @@ display:inline-flex;
 
 
 align-items:center;
-
-
-gap:5px;
 
 
 background:
@@ -548,6 +716,9 @@ margin:
 5px;
 
 
+gap:5px;
+
+
 }
 
 
@@ -557,7 +728,8 @@ margin:
 
 
 
-/* 主题按钮 */
+
+/* 主题 */
 
 
 .theme-grid{
@@ -581,17 +753,17 @@ gap:12px;
 .theme-grid button{
 
 
-padding:
-
-14px 10px;
-
-
-border-radius:22px;
-
-
 background:
 
 rgba(255,255,255,.75);
+
+
+padding:
+
+14px 8px;
+
+
+border-radius:22px;
 
 
 color:var(--text);
@@ -655,7 +827,9 @@ z-index:999;
 
 .hidden{
 
+
 display:none;
+
 
 }
 
@@ -677,12 +851,22 @@ background:white;
 border-radius:32px;
 
 
-padding:28px;
+padding:30px;
 
 
 animation:
 
-show .25s;
+popup .25s;
+
+
+}
+
+
+
+.modal-box h2{
+
+
+margin-bottom:20px;
 
 
 }
@@ -715,7 +899,7 @@ background:#F8F5F1;
 border-radius:18px;
 
 
-margin-top:12px;
+margin-bottom:12px;
 
 
 font-size:14px;
@@ -725,10 +909,12 @@ font-size:14px;
 
 
 
+
 .modal-box textarea{
 
 
-height:100px;
+height:110px;
+
 
 resize:none;
 
@@ -737,19 +923,21 @@ resize:none;
 
 
 
+
 .time-row{
 
 
 display:flex;
 
-gap:12px;
+
+gap:10px;
 
 
 }
 
 
 
-.time-row div{
+.time-row input{
 
 
 flex:1;
@@ -764,10 +952,11 @@ flex:1;
 
 display:flex;
 
+
 gap:12px;
 
 
-margin-top:18px;
+margin-top:15px;
 
 
 }
@@ -798,6 +987,7 @@ background:#eee;
 
 background:var(--primary);
 
+
 color:white;
 
 
@@ -806,27 +996,36 @@ color:white;
 
 
 
-@keyframes show{
+
+
+@keyframes popup{
 
 
 from{
 
+
 opacity:0;
 
+
 transform:scale(.9);
+
 
 }
 
 
 to{
 
+
 opacity:1;
 
-}
+
+transform:scale(1);
 
 
 }
 
+
+}
 
 
 
@@ -841,6 +1040,7 @@ opacity:1;
 ========================== */
 
 
+
 body.mint{
 
 --bg:#EDF8F4;
@@ -848,7 +1048,6 @@ body.mint{
 --primary:#A8D8C8;
 
 }
-
 
 
 body.sakura{
@@ -972,15 +1171,18 @@ body.teddy{
 
 .app{
 
+
 padding:
 
 20px 15px;
+
 
 }
 
 
 
 .top h1{
+
 
 font-size:26px;
 
@@ -1008,6 +1210,7 @@ padding:20px;
 
 
 }
+
 
 
 }
