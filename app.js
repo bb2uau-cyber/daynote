@@ -11,6 +11,58 @@
 let tasks = JSON.parse(
     localStorage.getItem("tasks")
 ) || [];
+let categories = JSON.parse(
+localStorage.getItem("categories")
+) || [
+
+{
+name:"视觉设计",
+icon:"🎨"
+},
+
+{
+name:"产品开发",
+icon:"📦"
+},
+
+{
+name:"AI灵感",
+icon:"💡"
+}
+
+];
+function renderCategories(){
+
+let select =
+document.getElementById(
+"taskCategory"
+);
+
+
+select.innerHTML =
+`
+<option>
+选择分类
+</option>
+`;
+
+
+categories.forEach((c)=>{
+
+
+select.innerHTML +=
+
+`
+<option value="${c.name}">
+${c.icon} ${c.name}
+</option>
+
+`;
+
+});
+
+
+}
 
 
 let routines = JSON.parse(
@@ -56,6 +108,8 @@ document.addEventListener(
     loadTheme();
 
     showDate();
+
+    renderCategories();
 
     renderTasks();
 
@@ -116,6 +170,13 @@ function showDate(){
 
 function bindEvents(){
 
+
+ document
+.getElementById(
+"manageCategoryBtn"
+)
+.onclick =
+addCategory;
 
 
 // 打开任务弹窗
@@ -1188,6 +1249,45 @@ document
 
 
 });
+
+
+}
+function addCategory(){
+
+
+let name =
+prompt("输入分类名称");
+
+
+if(!name)return;
+
+
+
+let icon =
+prompt(
+"输入图标，例如 🎨"
+)
+||
+"📌";
+
+
+
+categories.push({
+
+name:name,
+
+icon:icon
+
+});
+
+
+localStorage.setItem(
+"categories",
+JSON.stringify(categories)
+);
+
+
+renderCategories();
 
 
 }
