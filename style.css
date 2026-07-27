@@ -1,33 +1,49 @@
+/* ==========================
+ Daynote V3.0
+ Korean Digital Journal UI
+========================== */
+
+
+
 :root{
 
-    --bg:#FBF5ED;
-    --card:#FFFFFF;
+    --bg:#FBF7F3;
 
-    --primary:#D4B28C;
-    --primary-dark:#B48A62;
+    --card:rgba(255,255,255,.82);
 
-    --success:#A9B89A;
+    --primary:#D8BFAE;
 
-    --text:#333333;
-    --sub:#8C8C8C;
+    --primary-dark:#B89A82;
 
-    --border:#EFEAE3;
+    --success:#A8CDBA;
+
+    --text:#4A4745;
+
+    --sub:#9B9590;
+
+    --line:#EEE7E1;
 
 }
 
 
 
-/* ===== 基础 ===== */
+
+
 
 
 *{
+
     box-sizing:border-box;
+
 }
+
 
 
 body{
 
     margin:0;
+
+    min-height:100vh;
 
     background:var(--bg);
 
@@ -37,35 +53,30 @@ body{
 
     "PingFang SC",
     "Microsoft YaHei",
-    "Noto Sans SC",
     sans-serif;
 
 
+    transition:.4s;
+
+
 }
 
 
 
-button{
-
-    border:none;
-
-    cursor:pointer;
-
-    font-family:inherit;
-
-}
 
 
 
 .app{
 
-    width:100%;
 
     max-width:900px;
 
     margin:auto;
 
-    padding:30px 24px 60px;
+    padding:
+
+    35px 25px 80px;
+
 
 }
 
@@ -73,10 +84,13 @@ button{
 
 
 
-/* ===== 顶部 ===== */
+
+
+/* 顶部 */
 
 
 .top{
+
 
     display:flex;
 
@@ -84,7 +98,8 @@ button{
 
     align-items:center;
 
-    margin-bottom:25px;
+    margin-bottom:28px;
+
 
 }
 
@@ -92,13 +107,15 @@ button{
 
 .top h1{
 
-    margin:0;
 
-    font-size:30px;
+    font-size:32px;
+
+    margin:0;
 
     font-weight:600;
 
     letter-spacing:-1px;
+
 
 }
 
@@ -106,9 +123,10 @@ button{
 
 .top p{
 
-    margin-top:8px;
 
     color:var(--sub);
+
+    margin-top:8px;
 
 }
 
@@ -118,21 +136,20 @@ button{
 
 .mood{
 
-    background:var(--card);
 
     padding:12px 20px;
 
+    background:var(--card);
+
+    backdrop-filter:blur(15px);
+
     border-radius:30px;
+
 
     box-shadow:
 
-    0 8px 25px rgba(0,0,0,.05);
+    0 8px 30px rgba(0,0,0,.05);
 
-    display:flex;
-
-    gap:8px;
-
-    align-items:center;
 
 }
 
@@ -141,34 +158,43 @@ button{
 
 
 
-/* ===== 卡片 ===== */
+
+
+
+
+/* 卡片 */
 
 
 .card{
 
+
     background:var(--card);
 
-    border-radius:26px;
 
-    padding:24px;
+    backdrop-filter:blur(20px);
+
+
+    border-radius:28px;
+
+
+    padding:25px;
+
 
     margin-bottom:18px;
 
 
+
     box-shadow:
 
-    0 12px 35px rgba(0,0,0,.04);
 
-
-    transition:.3s;
-
-}
+    0 15px 40px rgba(0,0,0,.04);
 
 
 
-.card:hover{
+    border:
 
-    transform:translateY(-2px);
+    1px solid rgba(255,255,255,.6);
+
 
 }
 
@@ -180,11 +206,13 @@ button{
 
 .section-title{
 
+
     font-size:18px;
 
     font-weight:600;
 
     margin-bottom:18px;
+
 
 }
 
@@ -192,54 +220,54 @@ button{
 
 .section-header{
 
+
     display:flex;
 
     justify-content:space-between;
 
     align-items:center;
 
+
 }
 
 
 
 
 
-/* ===== 按钮 ===== */
 
 
-#addTaskBtn,
+button{
 
-#addRoutineBtn,
 
-#addIdeaBtn{
+    border:none;
+
+    cursor:pointer;
+
+    font-family:inherit;
+
+}
+
+
+
+
+
+
+
+.section-header button{
+
 
     background:var(--primary);
 
     color:white;
 
-    padding:8px 15px;
+
+    padding:
+
+    8px 16px;
+
 
     border-radius:20px;
 
-    font-size:13px;
-
-}
-
-
-
-
-
-.add-small{
-
-    background:#f7f3ee;
-
-    color:var(--sub);
-
-    width:100%;
-
-    padding:14px;
-
-    border-radius:18px;
 
 }
 
@@ -248,10 +276,12 @@ button{
 
 
 
-/* ===== 进度 ===== */
+
+/* 完成度 */
 
 
 .progress-info{
+
 
     display:flex;
 
@@ -259,14 +289,12 @@ button{
 
     color:var(--sub);
 
-    margin-bottom:12px;
 
 }
 
 
-
-
 .progress-bar{
+
 
     height:12px;
 
@@ -276,21 +304,36 @@ button{
 
     overflow:hidden;
 
+    margin-top:12px;
+
+
 }
 
 
 
 #progressLine{
 
+
     height:100%;
 
     width:0;
 
-    background:var(--primary);
 
-    border-radius:20px;
+    background:
+
+    linear-gradient(
+
+    90deg,
+
+    var(--primary),
+
+    var(--success)
+
+    );
+
 
     transition:.5s;
+
 
 }
 
@@ -301,7 +344,9 @@ button{
 
 
 
-/* ===== 任务 ===== */
+
+
+/* 任务 */
 
 
 .task-item{
@@ -311,10 +356,7 @@ button{
 
     border-bottom:
 
-    1px solid var(--border);
-
-
-    animation:fade .3s;
+    1px solid var(--line);
 
 
 }
@@ -323,7 +365,8 @@ button{
 
 .task-item:last-child{
 
-    border-bottom:none;
+
+    border:none;
 
 }
 
@@ -331,11 +374,13 @@ button{
 
 .task-main{
 
+
     display:flex;
+
+    gap:14px;
 
     align-items:flex-start;
 
-    gap:12px;
 
 }
 
@@ -343,15 +388,22 @@ button{
 
 .checkbox{
 
+
     width:22px;
 
     height:22px;
 
+
     border-radius:50%;
 
-    border:2px solid var(--primary);
 
-    flex-shrink:0;
+    border:
+
+    2px solid var(--primary);
+
+
+    flex:none;
+
 
 }
 
@@ -359,9 +411,12 @@ button{
 
 .checkbox.done{
 
+
     background:var(--success);
 
+
     border-color:var(--success);
+
 
 }
 
@@ -369,7 +424,9 @@ button{
 
 .task-title{
 
+
     font-size:15px;
+
 
 }
 
@@ -377,9 +434,11 @@ button{
 
 .task-done{
 
-    text-decoration:line-through;
 
     color:#aaa;
+
+    text-decoration:line-through;
+
 
 }
 
@@ -387,11 +446,15 @@ button{
 
 .task-meta{
 
-    margin-top:8px;
 
     font-size:12px;
 
     color:var(--sub);
+
+    line-height:1.8;
+
+    margin-top:8px;
+
 
 }
 
@@ -399,17 +462,26 @@ button{
 
 .note{
 
-    background:#faf8f5;
-
-    padding:12px;
 
     margin-top:12px;
 
-    border-radius:15px;
+
+    padding:13px;
+
+
+    background:
+
+    rgba(255,255,255,.55);
+
+
+    border-radius:18px;
+
+
+    color:#777;
+
 
     font-size:13px;
 
-    color:#666;
 
 }
 
@@ -417,16 +489,22 @@ button{
 
 
 
-/* ===== 统计 ===== */
+
+
+
+
+/* 统计 */
 
 
 .statistics{
 
+
     display:flex;
 
-    justify-content:space-between;
+    justify-content:space-around;
 
     text-align:center;
+
 
 }
 
@@ -434,11 +512,11 @@ button{
 
 .statistics p{
 
-    margin:0 0 10px;
 
     color:var(--sub);
 
     font-size:13px;
+
 
 }
 
@@ -446,7 +524,9 @@ button{
 
 .statistics strong{
 
-    font-size:25px;
+
+    font-size:26px;
+
 
 }
 
@@ -456,29 +536,33 @@ button{
 
 
 
-/* ===== 主题 ===== */
+
+/* 分类 */
 
 
-.theme-box{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:12px;
-
-}
+.category-tag{
 
 
+    display:inline-flex;
 
-.theme-box button{
+
+    padding:
+
+    8px 15px;
 
 
-    background:#f5f5f5;
+    background:
 
-    padding:12px 16px;
+    rgba(255,255,255,.6);
+
 
     border-radius:20px;
+
+
+    margin:
+
+    5px;
+
 
     font-size:14px;
 
@@ -490,7 +574,72 @@ button{
 
 
 
-/* ===== 弹窗 ===== */
+
+
+
+/* 主题 */
+
+
+.theme-grid{
+
+
+    display:grid;
+
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+
+    gap:12px;
+
+
+}
+
+
+
+.theme-grid button{
+
+
+    background:
+
+    rgba(255,255,255,.7);
+
+
+    padding:
+
+    14px;
+
+
+    border-radius:20px;
+
+
+    color:var(--text);
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.theme-grid button:hover{
+
+
+    transform:translateY(-3px);
+
+
+}
+
+
+
+
+
+
+
+
+/* 弹窗 */
 
 
 .modal{
@@ -498,7 +647,9 @@ button{
 
     position:fixed;
 
+
     inset:0;
+
 
     background:
 
@@ -507,9 +658,12 @@ button{
 
     display:flex;
 
+
     justify-content:center;
 
+
     align-items:center;
+
 
     z-index:100;
 
@@ -518,19 +672,24 @@ button{
 
 
 
-
 .hidden{
 
+
     display:none;
+
 
 }
 
 
 
-.modal-content{
+
+.modal-box{
 
 
-    width:90%;
+    width:
+
+    90%;
+
 
     max-width:420px;
 
@@ -538,12 +697,15 @@ button{
     background:white;
 
 
-    border-radius:30px;
-
-    padding:28px;
+    border-radius:32px;
 
 
-    animation:pop .25s;
+    padding:30px;
+
+
+    animation:
+
+    popup .3s;
 
 
 }
@@ -552,28 +714,11 @@ button{
 
 
 
-.modal-content h2{
+.modal-box h2{
+
 
     margin-top:0;
 
-}
-
-
-
-
-.modal-content label{
-
-
-    display:block;
-
-    font-size:13px;
-
-    color:var(--sub);
-
-    margin:
-
-    15px 0 8px;
-
 
 }
 
@@ -581,11 +726,11 @@ button{
 
 
 
-.modal-content input,
+.modal-box input,
 
-.modal-content textarea,
+.modal-box select,
 
-.modal-content select{
+.modal-box textarea{
 
 
     width:100%;
@@ -593,41 +738,46 @@ button{
 
     border:none;
 
-    background:#f7f5f2;
 
-    border-radius:15px;
+    background:#F8F5F1;
+
 
     padding:14px;
 
 
-    outline:none;
+    border-radius:18px;
 
-    font-size:14px;
+
+    margin-bottom:12px;
+
+
+    outline:none;
 
 
 }
 
 
 
+.modal-box textarea{
 
-
-.modal-content textarea{
 
     height:100px;
 
     resize:none;
 
-}
 
+}
 
 
 
 
 .time-row{
 
+
     display:flex;
 
     gap:10px;
+
 
 }
 
@@ -635,11 +785,11 @@ button{
 
 .time-row div{
 
+
     flex:1;
 
+
 }
-
-
 
 
 
@@ -650,88 +800,68 @@ button{
 
     gap:12px;
 
-    margin-top:20px;
+
+    margin-top:15px;
+
 
 }
-
 
 
 .modal-buttons button{
 
+
     flex:1;
+
 
     padding:14px;
 
-    border-radius:18px;
+
+    border-radius:20px;
 
 
 }
 
 
 
-#cancelTask,
+.modal-buttons button:last-child{
 
-#cancelRoutine{
-
-    background:#eee;
-
-}
-
-
-
-#saveTask,
-
-#saveRoutine{
 
     background:var(--primary);
 
+
     color:white;
 
-}
-
-
-
-
-
-/* ===== 动画 ===== */
-
-
-@keyframes fade{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(10px);
-
-    }
-
-
-    to{
-
-        opacity:1;
-
-    }
 
 }
 
 
 
-@keyframes pop{
 
-    from{
 
-        opacity:0;
 
-        transform:scale(.9);
 
-    }
+@keyframes popup{
 
-    to{
 
-        opacity:1;
+from{
 
-    }
+
+opacity:0;
+
+transform:scale(.9);
+
+
+}
+
+
+to{
+
+
+opacity:1;
+
+
+}
+
 
 }
 
@@ -742,74 +872,175 @@ button{
 
 
 
-/* ===== 五套主题 ===== */
+
+/* ==========================
+12套主题
+========================== */
 
 
 
 body.mint{
 
 
-    --bg:#F1F8F5;
+--bg:#EDF8F4;
 
-    --primary:#91C9B0;
+--primary:#A8D8C8;
 
-    --primary-dark:#6FAF92;
-
-
-}
-
-
-
-body.pink{
-
-
-    --bg:#FFF3F6;
-
-    --primary:#E8A7B8;
-
-    --primary-dark:#D98298;
+--primary-dark:#82BFA9;
 
 
 }
 
 
 
-body.purple{
+body.sakura{
 
 
-    --bg:#F6F2FA;
+--bg:#FFF4F6;
 
-    --primary:#B7A4D8;
+--primary:#EAB6C7;
 
-    --primary-dark:#9278C0;
-
-
-}
-
-
-
-body.blue{
-
-
-    --bg:#F1F7FC;
-
-    --primary:#8BB9DD;
-
-    --primary-dark:#6298C4;
+--primary-dark:#D88EA8;
 
 
 }
 
 
 
-body.cream{
+body.lavender{
 
 
-    --bg:#FBF5ED;
+--bg:#F6F1FA;
 
-    --primary:#D4B28C;
+--primary:#C6B5E5;
 
-    --primary-dark:#B48A62;
+--primary-dark:#9C83CC;
+
+
+}
+
+
+
+body.babyblue{
+
+
+--bg:#F1F7FC;
+
+--primary:#A8CDE8;
+
+--primary-dark:#7BAED2;
+
+
+}
+
+
+
+body.vanilla{
+
+
+--bg:#FCF7EF;
+
+--primary:#E8D2AE;
+
+--primary-dark:#C8A87A;
+
+
+}
+
+
+
+body.aqua{
+
+
+--bg:#EFFAF8;
+
+--primary:#B5E2DC;
+
+--primary-dark:#78BEB7;
+
+
+}
+
+
+
+body.peach{
+
+
+--bg:#FFF5F0;
+
+--primary:#F3B8A6;
+
+--primary-dark:#DD8F78;
+
+
+}
+
+
+
+body.moon{
+
+
+--bg:#F3F0F8;
+
+--primary:#B7A8D0;
+
+--primary-dark:#8571AA;
+
+
+}
+
+
+
+body.ice{
+
+
+--bg:#F3FAFC;
+
+--primary:#B7DDE8;
+
+--primary-dark:#75B7CB;
+
+
+}
+
+
+
+body.lilac{
+
+
+--bg:#FAF2FA;
+
+--primary:#D2B7D9;
+
+--primary-dark:#B88FC4;
+
+
+}
+
+
+
+body.pearl{
+
+
+--bg:#F7F7F3;
+
+--primary:#D8D5CE;
+
+--primary-dark:#AAA69D;
+
+
+}
+
+
+
+body.teddy{
+
+
+--bg:#F8F0E7;
+
+--primary:#D8BFA8;
+
+--primary-dark:#B58F73;
 
 
 }
@@ -821,7 +1052,7 @@ body.cream{
 
 
 
-/* 手机适配 */
+/* 手机 */
 
 
 @media(max-width:600px){
@@ -829,7 +1060,10 @@ body.cream{
 
 .app{
 
-    padding:20px 15px;
+padding:
+
+20px 15px;
+
 
 }
 
@@ -837,27 +1071,33 @@ body.cream{
 
 .top h1{
 
-    font-size:25px;
+font-size:26px;
+
 
 }
 
+
+
+.theme-grid{
+
+
+grid-template-columns:
+
+repeat(2,1fr);
+
+
+}
 
 
 .card{
 
-    padding:20px;
+padding:20px;
 
-    border-radius:22px;
+border-radius:22px;
+
 
 }
 
-
-
-.statistics strong{
-
-    font-size:21px;
-
-}
 
 
 }
